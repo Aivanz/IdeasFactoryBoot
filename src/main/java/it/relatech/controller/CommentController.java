@@ -21,7 +21,7 @@ import it.relatech.model.Comment;
 import it.relatech.services.CommentService;
 import it.relatech.services.IdeaService;
 
-@CrossOrigin (origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
@@ -49,6 +49,18 @@ public class CommentController {
 		}
 	}
 
+	@PostMapping("/{id}")
+	public ResponseEntity<Comment> saveUpdateLink(@PathVariable("id") int id, @RequestBody Comment c) {
+		try {
+			c.setIdea(idserv.getId(id));
+			log.info("Saved");
+			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@PutMapping
 	public ResponseEntity<Comment> update(@RequestBody Comment c) {
 		try {
@@ -60,15 +72,25 @@ public class CommentController {
 		}
 	}
 
-	@PostMapping("/{id}")
-	public ResponseEntity<Comment> saveUpdateLink(@PathVariable("id") int id, @RequestBody Comment c) {
+	@PutMapping("/accepting")
+	public ResponseEntity<Comment> accepted(@RequestBody Comment comment) {
 		try {
-			c.setIdea(idserv.getId(id));
 			log.info("Saved");
-			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+			return new ResponseEntity<Comment>(comserv.accept(comment), HttpStatus.CREATED);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Comment>(comserv.accept(comment), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/evaluating")
+	public ResponseEntity<List<Comment>> listEvaluating() {
+		try {
+			log.info("List");
+			return new ResponseEntity<List<Comment>>(comserv.listEvaluating(), HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<List<Comment>>(comserv.listEvaluating(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -87,6 +109,7 @@ public class CommentController {
 	public ResponseEntity<Comment> deleteComment(@PathVariable("id") int id) {
 		try {
 			log.info("Deleted");
+			comserv.deleteId(id);
 			return new ResponseEntity<Comment>(HttpStatus.OK);
 			// return new ResponseEntity<Comment>(comserv.deleteId(id), HttpStatus.OK);
 		} catch (Exception e) {

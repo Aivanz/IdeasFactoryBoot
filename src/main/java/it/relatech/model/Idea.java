@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import it.relatech.util.JsonDateSerializer;
 
@@ -31,7 +32,8 @@ public class Idea {
 	private int votecounter;
 
 	// @JsonIgnore
-	@OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@JsonManagedReference
+	@OneToMany(mappedBy = "idea", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Comment> comlist;
 
 	// --------------------------------------------------------------

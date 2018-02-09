@@ -37,6 +37,18 @@ public class CommentServiceImpl implements CommentService {
 		return (List<Comment>) cdao.findAll();
 	}
 
+	@Override
+	public List<Comment> listEvaluating() {
+		return cdao.getCommentByAccepted(true);
+	}
+
+	@Override
+	public Comment accept(Comment comment) {
+		Comment com = cdao.getCommentById(comment.getId());
+		com.setAccepted(true);
+		return update(com);
+	}
+
 	// TODO: Unire al save
 	@Override
 	public Comment update(Comment comment) {

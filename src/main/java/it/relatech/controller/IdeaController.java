@@ -21,7 +21,7 @@ import it.relatech.model.Comment;
 import it.relatech.model.Idea;
 import it.relatech.services.IdeaService;
 
-@CrossOrigin (origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/idea")
 public class IdeaController {
@@ -58,15 +58,25 @@ public class IdeaController {
 		}
 	}
 
+	@PutMapping("/vote/{voto}")
+	public ResponseEntity<Idea> vote(@RequestBody Idea c, @PathVariable("voto") int voto) {
+		try {
+			log.info("Saved");
+			return new ResponseEntity<Idea>(idserv.vote(c, voto), HttpStatus.CREATED);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<Idea>(idserv.vote(c, voto), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@PutMapping("/accepting")
 	public ResponseEntity<Idea> accepted(@RequestBody Idea idea) {
 		try {
-			idea.setAccepted(true);
 			log.info("Saved");
-			return new ResponseEntity<Idea>(idserv.update(idea), HttpStatus.CREATED);
+			return new ResponseEntity<Idea>(idserv.accept(idea), HttpStatus.CREATED);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Idea>(idserv.update(idea), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Idea>(idserv.accept(idea), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -107,6 +117,7 @@ public class IdeaController {
 	public ResponseEntity<Idea> deleteIdea(@PathVariable("id") int id) {
 		try {
 			log.info("Deleted");
+			idserv.deleteId(id);
 			return new ResponseEntity<Idea>(HttpStatus.OK);
 			// return new ResponseEntity<Idea>(idserv.deleteId(id), HttpStatus.OK);
 		} catch (Exception e) {

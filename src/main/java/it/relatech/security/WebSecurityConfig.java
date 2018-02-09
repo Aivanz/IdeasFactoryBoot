@@ -60,6 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/**").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/idea/evaluating").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/idea/accepting").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/comment/evaluating").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/comment/accepting").access("hasRole('ROLE_ADMIN')")
 				.and().logout().permitAll().and().logout()
 				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
 		// .anyRequest().authenticated();

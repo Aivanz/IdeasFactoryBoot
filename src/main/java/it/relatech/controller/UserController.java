@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.relatech.model.User;
 import it.relatech.services.UserService;
 
-@CrossOrigin (origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -79,6 +79,7 @@ public class UserController {
 	public ResponseEntity<User> deleteUser(@PathVariable("id") int id) {
 		try {
 			log.info("Deleted");
+			userv.delete(id);
 			return new ResponseEntity<User>(HttpStatus.OK);
 			// return new ResponseEntity<User>(userv.delete(id), HttpStatus.OK);
 		} catch (Exception e) {

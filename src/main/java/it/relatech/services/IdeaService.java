@@ -17,4 +17,8 @@ public interface IdeaService {
 	List<Idea> list();
 
 	List<Idea> listAccepted();
+
+	Idea vote(Idea c, int voto);
+
+	Idea accept(Idea idea);
 }

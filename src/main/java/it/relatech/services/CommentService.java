@@ -15,4 +15,8 @@ public interface CommentService {
 	void deleteId(int id);
 
 	List<Comment> list();
+
+	Comment accept(Comment comment);
+
+	List<Comment> listEvaluating();
 }

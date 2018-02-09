@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import it.relatech.model.Idea;
 import it.relatech.util.JsonDateSerializer;
@@ -26,7 +26,8 @@ public class Comment {
 
 	private boolean accepted;
 
-	@JsonIgnore
+	// @JsonIgnore
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Idea idea;
 
