@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,6 +23,7 @@ public class Idea {
 	@GeneratedValue
 	private int id;
 
+	@Size(max = 500)
 	private String text;
 
 	@JsonSerialize(using = JsonDateSerializer.class)

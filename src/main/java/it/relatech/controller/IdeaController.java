@@ -37,7 +37,7 @@ public class IdeaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Idea> saveUpdate(@RequestBody Idea c) {
+	public ResponseEntity<Idea> save(@RequestBody Idea c) {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
