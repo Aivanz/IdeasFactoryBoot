@@ -28,7 +28,7 @@ public class IdeaServiceImpl implements IdeaService {
 	}
 
 	@Override
-	public Idea getId(int id) {
+	public Idea getById(int id) {
 		return idao.findOne(id);
 	}
 

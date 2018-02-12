@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 	private UserDao usdao;
 
 	@Override
-	public User add(User user) {
+	public User save(User user) {
 		return usdao.save(user);
 	}
 
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUserById(int id) {
+	public User getById(int id) {
 		return usdao.findOne(id);
 	}
 
@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUserByUsername(String username) {
-		return usdao.findByUsername(username);
+	public User getByUsername(String username) {
+		return usdao.getByUsername(username);
 	}
 
 }

@@ -6,16 +6,16 @@ import it.relatech.model.User;
 
 public interface UserService {
 
-	User add(User user);
+	User save(User user);
 
 	User update(User user);
 
 	List<User> getList();
 
-	User findUserById(int id);
+	User getById(int id);
 
 	void delete(int id);
 
-	User findUserByUsername(String username);
+	User getByUsername(String username);
 
 }

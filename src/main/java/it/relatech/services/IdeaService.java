@@ -10,7 +10,7 @@ public interface IdeaService {
 
 	Idea update(Idea idea);
 
-	Idea getId(int id);
+	Idea getById(int id);
 
 	void deleteId(int id);
 

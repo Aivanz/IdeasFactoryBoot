@@ -103,18 +103,18 @@ public class IdeaController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Idea> getIdea(@PathVariable("id") int id) {
+	public ResponseEntity<Idea> getById(@PathVariable("id") int id) {
 		try {
-			log.info("List");
-			return new ResponseEntity<Idea>(idserv.getId(id), HttpStatus.OK);
+			log.info("getById");
+			return new ResponseEntity<Idea>(idserv.getById(id), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Idea>(idserv.getId(id), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Idea>(idserv.getById(id), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Idea> deleteIdea(@PathVariable("id") int id) {
+	public ResponseEntity<Idea> delete(@PathVariable("id") int id) {
 		try {
 			log.info("Deleted");
 			idserv.deleteId(id);
@@ -129,10 +129,10 @@ public class IdeaController {
 	}
 
 	@GetMapping("comlist/{id}")
-	public ResponseEntity<List<Comment>> listcomment(@PathVariable("id") int id) {
+	public ResponseEntity<List<Comment>> listComment(@PathVariable("id") int id) {
 		List<Comment> cl = null;
 		try {
-			cl = idserv.getId(id).getComlist();
+			cl = idserv.getById(id).getComlist();
 			log.info("List");
 			return new ResponseEntity<List<Comment>>(cl, HttpStatus.OK);
 		} catch (Exception e) {

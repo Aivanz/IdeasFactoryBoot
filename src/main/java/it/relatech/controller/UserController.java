@@ -53,18 +53,19 @@ public class UserController {
 	public ResponseEntity<User> saveUpdate(@RequestBody User user) {
 		try {
 			log.info("Saved");
-			return new ResponseEntity<User>(userv.add(user), HttpStatus.CREATED);
+			return new ResponseEntity<User>(userv.save(user), HttpStatus.CREATED);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<User>(userv.add(user), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<User>(userv.save(user), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	// PUT
-	@PutMapping
-	public ResponseEntity<User> update(@RequestBody User user) {
+	@PutMapping("/{id}")
+	public ResponseEntity<User> update(@RequestBody User user, @PathVariable("id") int id) {
 		try {
+			user.setId(id);
 			log.info("Saved");
 			return new ResponseEntity<User>(userv.update(user), HttpStatus.CREATED);
 		} catch (Exception e) {
