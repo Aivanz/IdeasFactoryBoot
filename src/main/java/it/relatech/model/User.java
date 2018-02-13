@@ -28,7 +28,7 @@ public class User {
 	private String mail;
 
 	@Enumerated(EnumType.STRING)
-	private UserProfile usprof;
+	private final UserProfile usprof = UserProfile.ROLE_ADMIN;
 
 	public User() {
 	}
@@ -59,10 +59,6 @@ public class User {
 
 	public UserProfile getUsprof() {
 		return usprof;
-	}
-
-	public void setUsprof(UserProfile usprof) {
-		this.usprof = usprof;
 	}
 
 	public String getMail() {
