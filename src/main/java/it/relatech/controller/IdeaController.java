@@ -70,7 +70,7 @@ public class IdeaController {
 	}
 
 	@PutMapping("/accepting")
-	public ResponseEntity<Idea> accepted(@RequestBody Idea idea) {
+	public ResponseEntity<Idea> accepting(@RequestBody Idea idea) {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Idea>(idserv.accept(idea), HttpStatus.CREATED);

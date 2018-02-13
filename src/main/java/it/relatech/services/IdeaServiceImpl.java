@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.relatech.repository.IdeaDao;
+import it.relatech.mail.EmailConfig;
+import it.relatech.mail.MailObject;
 import it.relatech.model.Idea;
 
 @Service
@@ -16,10 +18,24 @@ public class IdeaServiceImpl implements IdeaService {
 	@Autowired
 	private IdeaDao idao;
 
+	@Autowired
+	private EmailConfig emailService;
+
+	public void sendMail(String destinatario, String oggetto, String testo) {
+		MailObject mailObject = new MailObject();
+		mailObject.setTo(destinatario);
+		mailObject.setSubject(oggetto);
+		mailObject.setText(testo);
+		emailService.sendSimpleMessage(mailObject);
+	}
+
 	@Override
 	public Idea save(Idea idea) {
+		Idea temp = new Idea();
 		idea.setDateIdea(Timestamp.from(Instant.now()));
-		return idao.save(idea);
+		temp = idao.save(idea);
+		sendMail("ciro.dalessandro@outlook.it", "Test idea", "E' stata creata/modificata una nuova idea");
+		return temp;
 	}
 
 	@Override
@@ -39,7 +55,19 @@ public class IdeaServiceImpl implements IdeaService {
 
 	@Override
 	public List<Idea> listAccepted() {
-		return idao.getIdeaByAccepted(true);
+		List<Idea> temp = idao.getIdeaByAccepted(true);
+		int temp_size = temp.size();
+
+		// Controlla i commenti accettati
+		for (int i = 0; i < temp_size; i++) {
+			int comment_size = temp.get(i).getComlist().size();
+			for (int j = comment_size - 1; j >= 0; j--) {
+				if (!temp.get(i).getComlist().get(j).isAccepted())
+					temp.get(i).getComlist().remove(j);
+			}
+		}
+
+		return temp;
 	}
 
 	@Override
@@ -66,14 +94,17 @@ public class IdeaServiceImpl implements IdeaService {
 	public Idea accept(Idea idea) {
 		Idea ide = idao.getIdeaById(idea.getId());
 		ide.setAccepted(true);
-		return update(ide);
+		return save(ide);
 	}
 
 	// TODO: Unire al save
 	@Override
 	public Idea update(Idea idea) {
+		Idea temp = new Idea();
 		idea.setDateIdea(Timestamp.from(Instant.now()));
-		return idao.save(idea);
+		idea.setAccepted(false);
+		temp = idao.save(idea);
+		return temp;
 	}
 
 }

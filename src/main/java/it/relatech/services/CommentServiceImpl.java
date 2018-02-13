@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.relatech.repository.CommentDao;
+import it.relatech.mail.EmailConfig;
+import it.relatech.mail.MailObject;
 import it.relatech.model.Comment;
 
 @Service
@@ -16,10 +18,24 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentDao cdao;
 
+	@Autowired
+	private EmailConfig emailService;
+
+	public void sendMail(String destinatario, String oggetto, String testo) {
+		MailObject mailObject = new MailObject();
+		mailObject.setTo(destinatario);
+		mailObject.setSubject(oggetto);
+		mailObject.setText(testo);
+		emailService.sendSimpleMessage(mailObject);
+	}
+
 	@Override
 	public Comment save(Comment comment) {
+		Comment temp = new Comment();
 		comment.setDateComment(Timestamp.from(Instant.now()));
-		return cdao.save(comment);
+		temp = cdao.save(comment);
+		sendMail("ciro.dalessandro@outlook.it", "Test commento", "E' stata creato/modificato un nuovo commento");
+		return temp;
 	}
 
 	@Override
@@ -30,6 +46,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void deleteId(int id) {
 		cdao.delete(id);
+		sendMail("ciro.dalessandro@outlook.it", "Test commento", "E' stato eliminato ");
 	}
 
 	@Override
@@ -39,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public List<Comment> listEvaluating() {
-		return cdao.getCommentByAccepted(true);
+		return cdao.getCommentByAccepted(false);
 	}
 
 	@Override
@@ -52,7 +69,9 @@ public class CommentServiceImpl implements CommentService {
 	// TODO: Unire al save
 	@Override
 	public Comment update(Comment comment) {
-		return cdao.save(comment);
+		Comment temp = new Comment();
+		temp = cdao.save(comment);
+		return temp;
 	}
 
 }

@@ -83,7 +83,7 @@ public class CommentController {
 		}
 	}
 
-	@GetMapping("/evaluating")
+	@GetMapping
 	public ResponseEntity<List<Comment>> listEvaluating() {
 		try {
 			log.info("List");
@@ -94,7 +94,7 @@ public class CommentController {
 		}
 	}
 
-	@GetMapping
+	@GetMapping("/listAll")
 	public ResponseEntity<List<Comment>> list() {
 		try {
 			log.info("List");
