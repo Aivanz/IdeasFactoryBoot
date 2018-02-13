@@ -20,7 +20,7 @@ public class EmailConfigImpl implements EmailConfig {
 	public void sendSimpleMessage(String to, String subject, String text) {
 		try {
 			SimpleMailMessage message = new SimpleMailMessage();
-			message.setFrom("wowtest3@hotmail.it");
+			message.setFrom("ideasfactory@outlook.it");
 			message.setTo(to);
 			message.setSubject(subject);
 			message.setText(text);
@@ -38,7 +38,7 @@ public class EmailConfigImpl implements EmailConfig {
 			MimeMessageHelper helper;
 			helper = new MimeMessageHelper(message, true);
 			helper.setSentDate(Timestamp.from(Instant.now()));
-			helper.setFrom("wowtest3@hotmail.it");
+			helper.setFrom("ideasfactory@outlook.it");
 			helper.setTo(mailObject.getTo());
 			helper.setSubject(mailObject.getSubject());
 			helper.setText(mailObject.getText());

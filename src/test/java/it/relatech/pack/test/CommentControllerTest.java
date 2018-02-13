@@ -110,7 +110,7 @@ public class CommentControllerTest {
 	// GET
 	@Test
 	public void listEvaluatingTest() throws Exception {
-		mockMvc.perform(get("/comment/evaluating").with(user("admin").password("admin").roles("ADMIN")))
+		mockMvc.perform(get("/comment/").with(user("admin").password("admin").roles("ADMIN")))
 				.andExpect(status().isOk());
 		verify(commentService, times(1)).listEvaluating();
 		verifyNoMoreInteractions(commentService);
@@ -118,7 +118,7 @@ public class CommentControllerTest {
 
 	@Test
 	public void listTest() throws Exception {
-		mockMvc.perform(get("/comment/")).andExpect(status().isOk());
+		mockMvc.perform(get("/comment/listAll")).andExpect(status().isOk());
 		verify(commentService, times(1)).list();
 		verifyNoMoreInteractions(commentService);
 	}

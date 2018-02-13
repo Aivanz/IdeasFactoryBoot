@@ -25,6 +25,8 @@ public class User {
 
 	private String password;
 
+	private String mail;
+
 	@Enumerated(EnumType.STRING)
 	private UserProfile usprof;
 
@@ -63,13 +65,19 @@ public class User {
 		this.usprof = usprof;
 	}
 
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		result = prime * result + ((usprof == null) ? 0 : usprof.hashCode());
+		result = prime * result + ((mail == null) ? 0 : mail.hashCode());
 		return result;
 	}
 
@@ -82,17 +90,10 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (password == null) {
-			if (other.password != null)
+		if (mail == null) {
+			if (other.mail != null)
 				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		if (usprof != other.usprof)
+		} else if (!mail.equals(other.mail))
 			return false;
 		return true;
 	}
