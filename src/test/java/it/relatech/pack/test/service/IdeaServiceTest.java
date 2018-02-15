@@ -22,13 +22,18 @@ import org.mockito.stubbing.Answer;
 import it.relatech.mail.EmailConfig;
 import it.relatech.model.Comment;
 import it.relatech.model.Idea;
+import it.relatech.model.User;
 import it.relatech.repository.IdeaDao;
+import it.relatech.repository.UserDao;
 import it.relatech.services.IdeaServiceImpl;
 
 public class IdeaServiceTest {
 
 	@Mock
 	private IdeaDao idao;
+
+	@Mock
+	private UserDao userDao;
 
 	@Mock
 	private EmailConfig emailService;
@@ -51,13 +56,22 @@ public class IdeaServiceTest {
 		Idea idea = new Idea();
 		idea.setText(contenuto);
 
-//		when(idao.save(any(Idea.class))).thenAnswer(new Answer() {
-//			public Object answer(InvocationOnMock invocation) {
-//				return invocation.getArguments()[0];
-//			}
-//		});
-		
+		// when(idao.save(any(Idea.class))).thenAnswer(new Answer() {
+		// public Object answer(InvocationOnMock invocation) {
+		// return invocation.getArguments()[0];
+		// }
+		// });
+
 		when(idao.save(idea)).thenReturn(idea);
+
+		// Controlliamo che la data sia stata impostata
+		when(userDao.findAll()).thenReturn(new ArrayList<User>());
+
+		when(idao.save(any(Idea.class))).thenAnswer(new Answer() {
+			public Object answer(InvocationOnMock invocation) {
+				return invocation.getArguments()[0];
+			}
+		});
 
 		// Controlliamo che la data sia stata impostata
 		Idea ideaReturn = ideaService.save(idea);
@@ -103,6 +117,8 @@ public class IdeaServiceTest {
 		idea.setText(contenuto);
 		idea.setId(id);
 
+		when(userDao.findAll()).thenReturn(new ArrayList<User>());
+
 		when(idao.getIdeaById(id)).thenReturn(idea);
 
 		when(idao.save(any(Idea.class))).thenAnswer(new Answer() {
@@ -127,6 +143,8 @@ public class IdeaServiceTest {
 		Timestamp time = Timestamp.from(Instant.now());
 		idea.setDateIdea(time);
 
+		when(userDao.findAll()).thenReturn(new ArrayList<User>());
+
 		when(idao.save(any(Idea.class))).thenAnswer(new Answer() {
 			public Object answer(InvocationOnMock invocation) {
 				return invocation.getArguments()[0];
@@ -137,7 +155,8 @@ public class IdeaServiceTest {
 		// e che la data sia maggiore di quella iniziale
 		Idea ideaReturn = ideaService.update(idea);
 		assertEquals(false, ideaReturn.isAccepted());
-		assertTrue(ideaReturn.getDateIdea().after(time));
+		boolean result = time.before(ideaReturn.getDateIdea());
+		assertTrue(!result);
 	}
 
 	@Test
