@@ -1,16 +1,19 @@
 package it.relatech.pack.test;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -25,10 +28,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.relatech.controller.CommentController;
 import it.relatech.model.Comment;
+import it.relatech.model.Idea;
 import it.relatech.services.CommentService;
+import it.relatech.services.IdeaService;
 
 public class CommentControllerTest {
+
 	private MockMvc mockMvc;
+
+	@Mock
+	private IdeaService ideaService;
 
 	@Mock
 	private CommentService commentService;
@@ -61,22 +70,30 @@ public class CommentControllerTest {
 		Comment comment = new Comment();
 		comment.setText(testo);
 
+		when(commentService.save(comment)).thenReturn(comment);
+
 		mockMvc.perform(post("/comment/").contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
-				.andExpect(status().isCreated());
+				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(comment)));
+
 		verify(commentService, times(1)).save(comment);
 		verifyNoMoreInteractions(commentService);
 	}
 
-	// ERRORE 500
 	@Test
 	public void saveLinkTest() throws Exception {
-		Comment comment = new Comment();
-		comment.setText(testo);
+		Comment comment = new Comment(), commentLinked = new Comment();
+		Idea idea = new Idea();
 		int id = 1;
 
-		mockMvc.perform(
-				post("/comment/{id}", id).contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
-				.andExpect(status().isCreated()).andDo(print());
+		idea.setId(id);
+		commentLinked.setIdea(idea);
+
+		when(ideaService.getById(id)).thenReturn(idea);
+		when(commentService.save(comment)).thenReturn(commentLinked);
+
+		mockMvc.perform(post("/comment/{id}", idea.getId()).contentType(MediaType.APPLICATION_JSON)
+				.content(asJSonString(comment))).andExpect(status().isCreated())
+				.andExpect(content().string(asJSonString(commentLinked)));
 
 		verify(commentService, times(1)).save(comment);
 		verifyNoMoreInteractions(commentService);
@@ -89,20 +106,25 @@ public class CommentControllerTest {
 		comment.setId(1);
 		comment.setText("Testo cambiato");
 
+		when(commentService.update(comment)).thenReturn(comment);
+
 		mockMvc.perform(put("/comment/").contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
-				.andExpect(status().isCreated());
+				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(comment)));
 		verify(commentService, times(1)).update(comment);
 		verifyNoMoreInteractions(commentService);
 	}
 
 	@Test
 	public void acceptedTest() throws Exception {
-		Comment comment = new Comment();
+		Comment comment = new Comment(), commentAccettato = new Comment();
 		comment.setAccepted(false);
+		commentAccettato.setAccepted(true);
 
-		mockMvc.perform(put("/comment/accepting").with(user("admin").password("admin").roles("ADMIN"))
-				.contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
-				.andExpect(status().isCreated());
+		when(commentService.accept(comment)).thenReturn(commentAccettato);
+
+		mockMvc.perform(
+				put("/comment/accepting").contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
+				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(commentAccettato)));
 		verify(commentService, times(1)).accept(comment);
 		verifyNoMoreInteractions(commentService);
 	}
@@ -110,15 +132,24 @@ public class CommentControllerTest {
 	// GET
 	@Test
 	public void listEvaluatingTest() throws Exception {
-		mockMvc.perform(get("/comment/").with(user("admin").password("admin").roles("ADMIN")))
-				.andExpect(status().isOk());
+		List<Comment> listAccepted = new LinkedList<>();
+
+		when(commentService.listEvaluating()).thenReturn(listAccepted);
+
+		mockMvc.perform(get("/comment/")).andExpect(status().isOk())
+				.andExpect(content().string(asJSonString(listAccepted)));
 		verify(commentService, times(1)).listEvaluating();
 		verifyNoMoreInteractions(commentService);
 	}
 
 	@Test
 	public void listTest() throws Exception {
-		mockMvc.perform(get("/comment/listAll")).andExpect(status().isOk());
+		List<Comment> listComplete = new LinkedList<>();
+
+		when(commentService.list()).thenReturn(listComplete);
+
+		mockMvc.perform(get("/comment/listAll")).andExpect(status().isOk())
+				.andExpect(content().string(asJSonString(listComplete)));
 		verify(commentService, times(1)).list();
 		verifyNoMoreInteractions(commentService);
 	}
@@ -126,11 +157,15 @@ public class CommentControllerTest {
 	// DELETE
 	@Test
 	public void deleteTest() throws Exception {
+		Comment comment = new Comment();
 		int id = 1;
 
-		mockMvc.perform(delete("/comment/{id}", id).with(user("admin").password("admin").roles("ADMIN")))
-				.andExpect(status().isOk());
-		verify(commentService, times(1)).deleteId(id);
+		comment.setId(id);
+
+		doNothing().when(commentService).deleteId(comment.getId());
+
+		mockMvc.perform(delete("/comment/{id}", id)).andExpect(status().isOk());
+		verify(commentService, times(1)).deleteId(comment.getId());
 		verifyNoMoreInteractions(commentService);
 	}
 }

@@ -1,14 +1,19 @@
 package it.relatech.pack.test;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +33,6 @@ import it.relatech.services.UserService;
 public class UserControllerTest {
 
 	private MockMvc mockMvc;
-	private RequestPostProcessor requestPostProcessor;
 
 	@Mock
 	private UserService userService;
@@ -50,7 +53,6 @@ public class UserControllerTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-		requestPostProcessor = user("admin").password("admin").roles("ADMIN");
 	}
 
 	// POST
@@ -58,8 +60,10 @@ public class UserControllerTest {
 	public void saveTest() throws Exception {
 		User user = new User();
 
-		mockMvc.perform(post("/user/").with(requestPostProcessor).contentType(MediaType.APPLICATION_JSON)
-				.content(asJSonString(user))).andExpect(status().isCreated());
+		when(userService.save(user)).thenReturn(user);
+
+		mockMvc.perform(post("/user/").contentType(MediaType.APPLICATION_JSON).content(asJSonString(user)))
+				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(user)));
 		verify(userService, times(1)).save(user);
 		verifyNoMoreInteractions(userService);
 	}
@@ -67,7 +71,11 @@ public class UserControllerTest {
 	// GET
 	@Test
 	public void getListTest() throws Exception {
-		mockMvc.perform(get("/user/").with(requestPostProcessor)).andExpect(status().isOk());
+		List<User> listUser = new LinkedList<>();
+
+		when(userService.getList()).thenReturn(listUser);
+
+		mockMvc.perform(get("/user/")).andExpect(status().isOk()).andExpect(content().string(asJSonString(listUser)));
 		verify(userService, times(1)).getList();
 		verifyNoMoreInteractions(userService);
 	}
@@ -78,8 +86,10 @@ public class UserControllerTest {
 		User user = new User();
 		int id = 1;
 
-		mockMvc.perform(put("/user/{id}", id).with(requestPostProcessor).contentType(MediaType.APPLICATION_JSON)
-				.content(asJSonString(user))).andExpect(status().isCreated());
+		when(userService.update(user)).thenReturn(user);
+
+		mockMvc.perform(put("/user/{id}", id).contentType(MediaType.APPLICATION_JSON).content(asJSonString(user)))
+				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(user)));
 		verify(userService, times(1)).update(user);
 		verifyNoMoreInteractions(userService);
 	}
@@ -89,7 +99,9 @@ public class UserControllerTest {
 	public void deleteTest() throws Exception {
 		int id = 1;
 
-		mockMvc.perform(delete("/user/{id}", id).with(requestPostProcessor)).andExpect(status().isOk());
+		doNothing().when(userService).delete(id);
+
+		mockMvc.perform(delete("/user/{id}", id)).andExpect(status().isOk());
 		verify(userService, times(1)).delete(id);
 		verifyNoMoreInteractions(userService);
 	}

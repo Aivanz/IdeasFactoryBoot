@@ -29,12 +29,14 @@ public class CommentServiceImpl implements CommentService {
 	public void sendMail(String oggetto, String testo) {
 		List<User> destinatari = (List<User>) userDao.findAll();
 
-		for (int i = 0; i < destinatari.size(); i++) {
-			MailObject mailObject = new MailObject();
-			mailObject.setTo(destinatari.get(i).getMail());
-			mailObject.setSubject(oggetto);
-			mailObject.setText(testo);
-			emailService.sendSimpleMessage(mailObject);
+		if (!destinatari.isEmpty()) {
+			for (int i = 0; i < destinatari.size(); i++) {
+				MailObject mailObject = new MailObject();
+				mailObject.setTo(destinatari.get(i).getMail());
+				mailObject.setSubject(oggetto);
+				mailObject.setText(testo);
+				emailService.sendSimpleMessage(mailObject);
+			}
 		}
 	}
 
@@ -74,7 +76,6 @@ public class CommentServiceImpl implements CommentService {
 		return update(com);
 	}
 
-	// TODO: Unire al save
 	@Override
 	public Comment update(Comment comment) {
 		Comment temp = new Comment();

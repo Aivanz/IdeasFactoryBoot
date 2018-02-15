@@ -11,6 +11,7 @@ import it.relatech.repository.IdeaDao;
 import it.relatech.repository.UserDao;
 import it.relatech.mail.EmailConfig;
 import it.relatech.mail.MailObject;
+import it.relatech.model.Comment;
 import it.relatech.model.Idea;
 import it.relatech.model.User;
 
@@ -29,12 +30,14 @@ public class IdeaServiceImpl implements IdeaService {
 	public void sendMail(String oggetto, String testo) {
 		List<User> destinatari = (List<User>) userDao.findAll();
 
-		for (int i = 0; i < destinatari.size(); i++) {
-			MailObject mailObject = new MailObject();
-			mailObject.setTo(destinatari.get(i).getMail());
-			mailObject.setSubject(oggetto);
-			mailObject.setText(testo);
-			emailService.sendSimpleMessage(mailObject);
+		if (!destinatari.isEmpty()) {
+			for (int i = 0; i < destinatari.size(); i++) {
+				MailObject mailObject = new MailObject();
+				mailObject.setTo(destinatari.get(i).getMail());
+				mailObject.setSubject(oggetto);
+				mailObject.setText(testo);
+				emailService.sendSimpleMessage(mailObject);
+			}
 		}
 	}
 
@@ -80,6 +83,12 @@ public class IdeaServiceImpl implements IdeaService {
 	}
 
 	@Override
+	public List<Comment> getListComment(int id) {
+		Idea idea = idao.findOne(id);
+		return idea.getComlist();
+	}
+
+	@Override
 	public Idea vote(Idea c, int voto) {
 		if (voto >= 1 && voto <= 5) {
 			Idea idea = idao.getIdeaById(c.getId());
@@ -106,7 +115,6 @@ public class IdeaServiceImpl implements IdeaService {
 		return save(ide);
 	}
 
-	// TODO: Unire al save
 	@Override
 	public Idea update(Idea idea) {
 		Idea temp = new Idea();
