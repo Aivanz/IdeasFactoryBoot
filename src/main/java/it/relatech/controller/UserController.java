@@ -82,12 +82,9 @@ public class UserController {
 			log.info("Deleted");
 			userv.delete(id);
 			return new ResponseEntity<User>(HttpStatus.OK);
-			// return new ResponseEntity<User>(userv.delete(id), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-			// return new ResponseEntity<User>(userv.delete(id),
-			// HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}

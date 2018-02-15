@@ -9,4 +9,6 @@ import it.relatech.model.User;
 public interface UserDao extends CrudRepository<User, Integer> {
 
 	User getByUsername(String username);
+
+	User getById(int id);
 }

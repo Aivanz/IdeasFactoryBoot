@@ -1,6 +1,8 @@
 package it.relatech.services;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,9 +47,19 @@ public class UserServiceImpl implements UserService {
 		return usdao.findOne(id);
 	}
 
-	// TODO: Unirlo al save
 	@Override
 	public User update(User user) {
+		User oldUser = usdao.getById(user.getId());
+
+		if (user.getMail() == null)
+			user.setMail(oldUser.getMail());
+
+		if (user.getUsername() == null)
+			user.setUsername(oldUser.getUsername());
+
+		if (user.getPassword() == null)
+			user.setPassword(oldUser.getPassword());
+
 		return save(user);
 	}
 
