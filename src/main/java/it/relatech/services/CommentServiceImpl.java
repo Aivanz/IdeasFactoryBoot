@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.relatech.repository.CommentDao;
+import it.relatech.repository.UserDao;
 import it.relatech.mail.EmailConfig;
 import it.relatech.mail.MailObject;
 import it.relatech.model.Comment;
+import it.relatech.model.User;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -19,14 +21,23 @@ public class CommentServiceImpl implements CommentService {
 	private CommentDao cdao;
 
 	@Autowired
+	private UserDao userDao;
+
+	@Autowired
 	private EmailConfig emailService;
 
-	public void sendMail(String destinatario, String oggetto, String testo) {
-		MailObject mailObject = new MailObject();
-		mailObject.setTo(destinatario);
-		mailObject.setSubject(oggetto);
-		mailObject.setText(testo);
-		emailService.sendSimpleMessage(mailObject);
+	public void sendMail(String oggetto, String testo) {
+		List<User> destinatari = (List<User>) userDao.findAll();
+
+		if (!destinatari.isEmpty()) {
+			for (int i = 0; i < destinatari.size(); i++) {
+				MailObject mailObject = new MailObject();
+				mailObject.setTo(destinatari.get(i).getMail());
+				mailObject.setSubject(oggetto);
+				mailObject.setText(testo);
+				emailService.sendSimpleMessage(mailObject);
+			}
+		}
 	}
 
 	@Override
@@ -34,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 		Comment temp = new Comment();
 		comment.setDateComment(Timestamp.from(Instant.now()));
 		temp = cdao.save(comment);
-		sendMail("ciro.dalessandro@outlook.it", "Test commento", "E' stata creato/modificato un nuovo commento");
+		sendMail("Test commento", "E' stata creato/modificato un nuovo commento");
 		return temp;
 	}
 
@@ -46,7 +57,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void deleteId(int id) {
 		cdao.delete(id);
-		sendMail("ciro.dalessandro@outlook.it", "Test commento", "E' stato eliminato ");
 	}
 
 	@Override
@@ -66,7 +76,6 @@ public class CommentServiceImpl implements CommentService {
 		return update(com);
 	}
 
-	// TODO: Unire al save
 	@Override
 	public Comment update(Comment comment) {
 		Comment temp = new Comment();

@@ -1,6 +1,8 @@
 package it.relatech.services;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User save(User user) {
-		return usdao.save(user);
+		// Controllo mail
+		String mail = user.getMail();
+		String pattern = "^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$";
+		Pattern r = Pattern.compile(pattern);
+		Matcher matcher = r.matcher(mail);
+
+		if (matcher.matches())
+			return usdao.save(user);
+		else
+			return null;
 	}
 
 	@Override
@@ -37,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	// TODO: Unirlo al save
 	@Override
 	public User update(User user) {
-		return usdao.save(user);
+		return save(user);
 	}
 
 	@Override

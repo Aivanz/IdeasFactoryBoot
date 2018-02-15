@@ -130,14 +130,12 @@ public class IdeaController {
 
 	@GetMapping("comlist/{id}")
 	public ResponseEntity<List<Comment>> listComment(@PathVariable("id") int id) {
-		List<Comment> cl = null;
 		try {
-			cl = idserv.getById(id).getComlist();
 			log.info("List");
-			return new ResponseEntity<List<Comment>>(cl, HttpStatus.OK);
+			return new ResponseEntity<List<Comment>>(idserv.getListComment(id), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<List<Comment>>(cl, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<Comment>>(idserv.getListComment(id), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

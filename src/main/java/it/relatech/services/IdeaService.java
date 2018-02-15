@@ -2,6 +2,7 @@ package it.relatech.services;
 
 import java.util.List;
 
+import it.relatech.model.Comment;
 import it.relatech.model.Idea;
 
 public interface IdeaService {
@@ -21,4 +22,6 @@ public interface IdeaService {
 	Idea vote(Idea c, int voto);
 
 	Idea accept(Idea idea);
+
+	List<Comment> getListComment(int id);
 }
