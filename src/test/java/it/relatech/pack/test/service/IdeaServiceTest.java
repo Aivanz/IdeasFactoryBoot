@@ -51,6 +51,7 @@ public class IdeaServiceTest {
 		id = 1;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void saveTest() {
 		Idea idea = new Idea();

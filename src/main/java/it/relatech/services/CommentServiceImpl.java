@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Comment update(Comment comment) {
 		Comment temp = new Comment();
-		temp = cdao.save(comment);
+		temp = save(comment);
 		return temp;
 	}
 

@@ -111,12 +111,9 @@ public class CommentController {
 			log.info("Deleted");
 			comserv.deleteId(id);
 			return new ResponseEntity<Comment>(HttpStatus.OK);
-			// return new ResponseEntity<Comment>(comserv.deleteId(id), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Comment>(HttpStatus.INTERNAL_SERVER_ERROR);
-			// return new ResponseEntity<Comment>(comserv.deleteId(id),
-			// HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}

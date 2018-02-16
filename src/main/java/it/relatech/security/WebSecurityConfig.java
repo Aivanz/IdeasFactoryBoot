@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -52,7 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().httpBasic().and().authorizeRequests().antMatchers("/login").permitAll()
+		http.csrf().disable().httpBasic().and().authorizeRequests()
+				.antMatchers("/login").permitAll()
 				.antMatchers(HttpMethod.GET.POST.PUT, "/idea/**").permitAll()
 				.antMatchers(HttpMethod.GET.POST, "/comment/**").permitAll()
 				.antMatchers(HttpMethod.PUT.DELETE, "/idea/**").access("hasRole('ROLE_ADMIN')")
@@ -62,9 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/idea/accepting").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/comment/").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/comment/accepting").access("hasRole('ROLE_ADMIN')")
-				.and().logout().permitAll().and().logout()
-				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
-		// .anyRequest().authenticated();
+				.and().logout().permitAll();
+//				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
 
 }
