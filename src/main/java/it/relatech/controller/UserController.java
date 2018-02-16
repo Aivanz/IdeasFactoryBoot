@@ -1,6 +1,9 @@
 package it.relatech.controller;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userv;
+
+	@Autowired
+	private AuthController authController;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -63,11 +69,14 @@ public class UserController {
 
 	// PUT
 	@PutMapping("/{id}")
-	public ResponseEntity<User> update(@RequestBody User user, @PathVariable("id") int id) {
+	public ResponseEntity<User> update(@RequestBody User user, @PathVariable("id") int id, Principal principal) {
 		try {
-			user.setId(id);
-			log.info("Saved");
-			return new ResponseEntity<User>(userv.update(user), HttpStatus.CREATED);
+			if (userv.checkAuth(principal, id)) {
+				user.setId(id);
+				log.info("Saved");
+				return new ResponseEntity<User>(userv.update(user), HttpStatus.CREATED);
+			} else
+				return new ResponseEntity<User>(HttpStatus.METHOD_NOT_ALLOWED);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<User>(userv.update(user), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -77,16 +86,23 @@ public class UserController {
 
 	// DELETE
 	@DeleteMapping("/{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable("id") int id) {
+	public ResponseEntity<User> deleteUser(@PathVariable("id") int id, Principal principal,
+			HttpServletRequest request) {
 		try {
-			log.info("Deleted");
-			userv.delete(id);
-			return new ResponseEntity<User>(HttpStatus.OK);
+			if (userv.checkAuth(principal, id)) {
+				log.info("Deleted");
+				userv.delete(id);
+
+				// Logout obbligatorio in quanto, una volta cancellato l'user, mantiene attiva
+				// la sessione
+				authController.logoutPage(request);
+				return new ResponseEntity<User>(HttpStatus.OK);
+			} else
+				return new ResponseEntity<User>(HttpStatus.METHOD_NOT_ALLOWED);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
 	}
 
 }

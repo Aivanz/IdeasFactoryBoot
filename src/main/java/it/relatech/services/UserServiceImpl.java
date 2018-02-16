@@ -1,5 +1,6 @@
 package it.relatech.services;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,6 +65,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getByUsername(String username) {
 		return usdao.getByUsername(username);
+	}
+
+	// Controllo sessione
+	@Override
+	public boolean checkAuth(Principal principal, int id) {
+		String nomePrincipal = principal.getName();
+		String nomeUtente = getById(id).getUsername();
+
+		if (nomePrincipal.equalsIgnoreCase(nomeUtente))
+			return true;
+		else
+			return false;
 	}
 
 }

@@ -1,8 +1,6 @@
 package it.relatech.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,10 +27,10 @@ public class AuthController {
 	}
 
 	@PostMapping("/logout")
-	public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
+	public void logoutPage(HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
+			new SecurityContextLogoutHandler().logout(request, null, null);
 		}
 	}
 
