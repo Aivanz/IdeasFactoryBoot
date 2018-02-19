@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Idea } from '../../model/idea';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Idea } from './../../model/idea';
 import { IdeaService } from '../../service/idea.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+
 
 @Component({
   selector: 'app-idea-eval',
@@ -8,15 +10,46 @@ import { IdeaService } from '../../service/idea.service';
   styleUrls: ['./idea-eval.component.css']
 })
 export class IdeaEvalComponent implements OnInit {
-  ideas: Array<Idea>;
-  selectedIdea: number;
+  
+  @Input() idea: Idea;
+  @Output() onChangeIdea: EventEmitter = new EventEmitter();
 
-  constructor(private service: IdeaService) { }
+  constructor(private service: IdeaService, private spinnerService: Ng4LoadingSpinnerService) { }
+
 
   ngOnInit() {
-    this.listIdeas();
+    
   }
-  listIdeas() {
-    this.ideas = this.service.readAllIdeasEval();
+  accept() {
+    if (confirm("Are you sure to accept the idea?")){
+      this.spinnerService.show();
+      this.service.accept(this.idea).subscribe(
+        (response) => {
+          this.spinnerService.hide();
+          this.onChangeIdea.emit("");
+          //this.listIdeas();
+        },
+        (err) => {
+          this.spinnerService.hide();
+        }
+      );
+    }
+
+
+  }
+  reject() {
+    if (confirm("Are you sure to delete the idea?")){
+      this.spinnerService.show();
+      this.service.reject(this.idea.id).subscribe(
+        (response) => {
+          this.spinnerService.hide();
+          this.onChangeIdea.emit("");
+          //this.listIdeas();
+        },
+        (err) => {
+          this.spinnerService.hide();
+        }
+      );
+    }
   }
 }

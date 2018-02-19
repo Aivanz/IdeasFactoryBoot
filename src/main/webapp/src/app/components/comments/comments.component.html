@@ -17,7 +17,7 @@
             <hr />
             <ul class="media-list">
               <li class="media" *ngFor="let comment of comments">
-                <app-comment *ngIf="fullComments" [comment]="comment"></app-comment>
+                <app-comment [comment]="comment"></app-comment>
               </li>
             </ul>
           </div>

@@ -8,15 +8,17 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class CommentService {
   private URI_COMMENT = '/comment';
+  private URI_IDEA = '/idea';
+  
   idea: Idea;
   constructor(private ideaService: IdeaService, private http: HttpClient) {}
 
   createComment(id: number, comment: Comment) {
     return this.http.post<Comment>(this.URI_COMMENT + '/' + id, comment );
   }
-  readAllComments(id: number) {
-//    this.idea = this.ideaService.readIdeas(id);
-    return this.idea.commentsList;
+
+  readCommentsByIdeaId(id: number) {
+    return this.http.get<Array<Comment>>(this.URI_IDEA + '/comlist/' + id );
   }
   updateComment(comment: Comment) {
     alert('aggiornato');
@@ -24,14 +26,14 @@ export class CommentService {
   deleteComment() {
     alert('eliminato');
   }
-  countComments(): number {
-    return this.idea.commentsList.length;
-  }
+ 
   readAllCommentsEval(): Observable<Array<Comment>> {
     return this.http.get<Array<Comment>>(this.URI_COMMENT);
   }
-  accept(comment: Comment): void {
-    this.http.put<Comment>(this.URI_COMMENT + '/accepting', comment);
+  accept(comment: Comment) {
+    return this.http.put<Comment>(this.URI_COMMENT + '/accepting/'+comment.id, comment);
   }
-  reject(id: number): void {}
+  reject(id: number) {
+    return this.http.delete<Comment>(this.URI_COMMENT + '/' + id);
+  }
 }

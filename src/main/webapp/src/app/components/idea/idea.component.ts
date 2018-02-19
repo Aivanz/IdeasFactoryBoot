@@ -34,7 +34,7 @@ export class IdeaComponent implements OnInit {
     this.router.navigate(['idea', this.idea.id, 'edit']);
   }
   commentIdea() {
-    this.router.navigate(['comment', this.idea.id]);
+    this.router.navigate(['idea', this.idea.id, 'comments']);
   }
   isUserLoggedIn(): boolean {
     return this.auth.isUserLoggedIn();

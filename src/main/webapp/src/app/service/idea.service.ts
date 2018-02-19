@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Idea } from './../model/idea';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class IdeaService {
@@ -22,8 +23,8 @@ export class IdeaService {
     return this.http.get<Idea>(this.URI_IDEA + '/' + id);
   }
 
-  readAllIdeasEval(): Array<Idea> {
-    return;
+  readAllIdeasEval(): Observable<Array<Idea>> {
+    return this.http.get<Array<Idea>>(this.URI_IDEA + '/evaluating');
   }
 
   updateIdea(idea: Idea) {
@@ -32,5 +33,12 @@ export class IdeaService {
 
   deleteIdea(idea: Idea) {
     return this.http.delete<Idea>(this.URI_IDEA + '/' + idea.id);
+  }
+
+  accept(idea: Idea) {
+    return this.http.put<Idea>(this.URI_IDEA + '/accepting/'+idea.id, idea);
+  }
+  reject(id: number) {
+    return this.http.delete<Idea>(this.URI_IDEA + '/' + id);
   }
 }

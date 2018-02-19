@@ -1,6 +1,6 @@
 import { RouteGuardService } from './service/route-guard.service';
 import { CommentEvalComponent } from './components/comment-eval/comment-eval.component';
-import { IdeaEvalComponent } from './components/idea-eval/idea-eval.component';
+import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component';
 import { UserComponent } from './components/user/user.component';
 import { IdeaInsertComponent } from './components/idea-insert/idea-insert.component';
 import { CommentsComponent } from './components/comments/comments.component';
@@ -40,7 +40,7 @@ const routes: Routes = [
   {
     path: 'admin/eval/ideas',
     pathMatch: 'full',
-    component: IdeaEvalComponent,
+    component: IdeasEvalComponent,
     canActivate: [RouteGuardService]
   },
   {
@@ -50,7 +50,7 @@ const routes: Routes = [
     canActivate: [RouteGuardService]
   },
   {
-    path: 'comment/:id',
+    path: 'idea/:id/comments',
     pathMatch: 'full',
     component: CommentsComponent
   },

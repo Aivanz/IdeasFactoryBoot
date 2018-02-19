@@ -9,6 +9,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -22,6 +23,9 @@ import { IdeaInsertComponent } from './components/idea-insert/idea-insert.compon
 import { UserComponent } from './components/user/user.component';
 import { IdeaEvalComponent } from './components/idea-eval/idea-eval.component';
 import { CommentEvalComponent } from './components/comment-eval/comment-eval.component';
+
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component';
 
 
 @NgModule({
@@ -37,7 +41,8 @@ import { CommentEvalComponent } from './components/comment-eval/comment-eval.com
     IdeaInsertComponent,
     UserComponent,
     IdeaEvalComponent,
-    CommentEvalComponent
+    CommentEvalComponent,
+    IdeasEvalComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,9 @@ import { CommentEvalComponent } from './components/comment-eval/comment-eval.com
     AngularFontAwesomeModule,
     FormsModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    CommonModule,
+    NgbModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [
     IdeaService,

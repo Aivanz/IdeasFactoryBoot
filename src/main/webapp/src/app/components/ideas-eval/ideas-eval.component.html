@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="row w-75 mx-auto">
+        <div class="col-md-12"></div>
+        <div class="col-md-12">
+            <h2>Ideas to evalueting</h2>
+            <hr>
+        </div>
+    </div>
+  <div *ngFor="let idea of ideas; let i = index">
+    <app-idea-eval (onChangeIdea) = "listIdeas()" [idea]="idea"></app-idea-eval>
+    <br>
+  </div>
+</div>

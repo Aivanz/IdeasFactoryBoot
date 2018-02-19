@@ -5,6 +5,7 @@ import { CommentService } from './../../service/comment.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JsonPipe } from '@angular/common';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-comments',
@@ -21,7 +22,8 @@ export class CommentsComponent implements OnInit {
     private ideaService: IdeaService,
     private commentService: CommentService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private spinnerService: Ng4LoadingSpinnerService
   ) {}
 
   ngOnInit() {
@@ -29,23 +31,36 @@ export class CommentsComponent implements OnInit {
       this.ideaService.readIdeas(+params.id).subscribe (
         (response) => {
           this.idea = response;
+          this.listComments(params.id);
         }
       );
     });
-    this.comments = this.commentService.readAllComments(this.idea.id);
-    this.fullComments = this.commentService.countComments() > 0 ? true : false;
+
   }
   newComment(e: Event) {
     e.preventDefault();
+    this.spinnerService.show();
     this.commentService.createComment(this.idea.id, this.comment).subscribe (
       (response) => {
         alert('Insert comment');
         this.router.navigate(['']);
+        this.spinnerService.hide();
       },
       (err) => {
-        alert(JSON.stringify(this.comment));
         alert('Error comment');
+        this.spinnerService.hide();
       }
     );
   }
+
+  listComments(id: number){
+    this.commentService.readCommentsByIdeaId(id).subscribe(
+    
+      (response) => {
+        this.comments = response;
+      }
+    
+    );
+  }
+
 }
