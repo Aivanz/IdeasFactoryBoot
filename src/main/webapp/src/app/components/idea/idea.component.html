@@ -1,0 +1,36 @@
+<div class="card {{colors[color%colors.length]}} text-white w-75 mx-auto">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <small>{{idea.date}}</small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>{{idea.text}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-md-6">
+        <ngb-rating [max]="5"></ngb-rating>
+      </div>
+      <div class="col-md-6 text-right">
+        <span *ngIf="isUserLoggedIn()">
+          <button type="button" class="btn btn-link" alt="Modify" (click)="modifyIdea()">
+            <fa name="edit" alt="Modify"></fa>
+          </button>|
+        </span>
+        <span *ngIf="isUserLoggedIn()">
+          <button type="button" class="btn btn-link" alt="Delete" (click)="deleteIdea()">
+            <fa name="trash"></fa>
+          </button>|
+        </span>
+        <button type="button" class="btn btn-link" alt="Comment" (click)="commentIdea()">
+          <fa name="comment"></fa>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

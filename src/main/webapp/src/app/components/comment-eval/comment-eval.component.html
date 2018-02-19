@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row w-75 mx-auto">
+    <div class="col-md-12"></div>
+    <div class="col-md-12">
+      <h2>Comment to evalueting</h2>
+      <hr>
+    </div>
+  </div>
+  <div class="row w-75 mx-auto">
+    <div class="col-md-12">
+      <ul class="media-list">
+        <li class="media" *ngFor="let comment of comments">
+          <div class="card w-75 mx-auto">
+            <div class="card-block">
+              <app-comment [comment]="comment"></app-comment>
+            </div>
+            <div class="card-footer text-right">
+              <small class="text-muted">Accept?&nbsp;</small>
+              <button type="button" class="btn btn-link text-success" alt="Accept" (click)="accept(comment)">
+                <fa name="check"></fa>
+              </button>
+              <button type="button" class="btn btn-link text-danger" alt="Reject" (click)="reject(comment.id)">
+                <fa name="times"></fa>
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

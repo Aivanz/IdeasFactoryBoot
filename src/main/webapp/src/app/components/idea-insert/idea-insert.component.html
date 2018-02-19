@@ -1,0 +1,9 @@
+<form class="container-fluid w-75 mx-auto">
+  <div class="form-group">
+      <h3>New Idea</h3>
+      <hr>
+      <textarea [(ngModel)]="idea.text" class="form-control" id="idea" rows="3" placeholder="Enter here for idea..." [ngModelOptions]="{standalone: true}"></textarea>
+    </div>
+    <a class="btn btn-primary text-white" (click)="newIdea()">Add</a>
+</form>
+
