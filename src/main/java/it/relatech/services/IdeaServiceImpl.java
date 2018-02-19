@@ -109,8 +109,8 @@ public class IdeaServiceImpl implements IdeaService {
 	}
 
 	@Override
-	public Idea accept(Idea idea) {
-		Idea ide = idao.getIdeaById(idea.getId());
+	public Idea accept(int id) {
+		Idea ide = idao.getIdeaById(id);
 		ide.setAccepted(true);
 		return save(ide);
 	}

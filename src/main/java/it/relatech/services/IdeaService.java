@@ -21,7 +21,7 @@ public interface IdeaService {
 
 	Idea vote(Idea c, int voto);
 
-	Idea accept(Idea idea);
+	Idea accept(int id);
 
 	List<Comment> getListComment(int id);
 

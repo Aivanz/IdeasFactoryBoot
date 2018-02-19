@@ -129,7 +129,7 @@ public class IdeaServiceTest {
 		});
 
 		// Controlliamo che l'idea sia accettata
-		Idea ideaReturn = ideaService.accept(idea);
+		Idea ideaReturn = ideaService.accept(id);
 		assertEquals(true, ideaReturn.isAccepted());
 
 	}

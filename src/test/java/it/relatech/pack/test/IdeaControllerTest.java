@@ -126,12 +126,12 @@ public class IdeaControllerTest {
 		ideaAccettata.setId(id);
 		ideaAccettata.setAccepted(true);
 
-		when(ideaService.accept(idea)).thenReturn(ideaAccettata);
+		when(ideaService.accept(id)).thenReturn(ideaAccettata);
 
 		mockMvc.perform(put("/idea/accepting/").contentType(MediaType.APPLICATION_JSON).content(asJSonString(idea)))
 				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(ideaAccettata)));
 
-		verify(ideaService, times(1)).accept(idea);
+		verify(ideaService, times(1)).accept(id);
 		verifyNoMoreInteractions(ideaService);
 	}
 
