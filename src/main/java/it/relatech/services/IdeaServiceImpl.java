@@ -2,6 +2,7 @@ package it.relatech.services;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,14 @@ public class IdeaServiceImpl implements IdeaService {
 	@Override
 	public List<Comment> getListComment(int id) {
 		Idea idea = idao.findOne(id);
-		return idea.getComlist();
+		List<Comment> commentAccepted = new LinkedList<>();
+
+		// Controlla i commenti accettati
+		for (Comment comment : idea.getComlist())
+			if (comment.isAccepted())
+				commentAccepted.add(comment);
+
+		return commentAccepted;
 	}
 
 	@Override
