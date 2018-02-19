@@ -84,10 +84,10 @@ public class IdeaController {
 	public ResponseEntity<List<Idea>> list() {
 		try {
 			log.info("List");
-			return new ResponseEntity<List<Idea>>(idserv.list(), HttpStatus.OK);
+			return new ResponseEntity<List<Idea>>(idserv.listNotAccepted(), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<List<Idea>>(idserv.list(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<Idea>>(idserv.listNotAccepted(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

@@ -24,4 +24,6 @@ public interface IdeaService {
 	Idea accept(Idea idea);
 
 	List<Comment> getListComment(int id);
+
+	List<Idea> listNotAccepted();
 }

@@ -124,4 +124,9 @@ public class IdeaServiceImpl implements IdeaService {
 		return temp;
 	}
 
+	@Override
+	public List<Idea> listNotAccepted() {
+		return idao.getIdeaByAccepted(false);
+	}
+
 }
