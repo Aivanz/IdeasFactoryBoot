@@ -46,7 +46,10 @@ public class IdeaServiceImpl implements IdeaService {
 		Idea temp = new Idea();
 		idea.setDateIdea(Timestamp.from(Instant.now()));
 		temp = idao.save(idea);
-		sendMail("Test idea", "E' stata creata/modificata una nuova idea");
+		if (!temp.isAccepted()) {
+
+			sendMail("Test idea", "E' stata creata/modificata una nuova idea");
+		}
 		return temp;
 	}
 

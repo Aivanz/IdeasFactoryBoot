@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import it.relatech.model.User;
 import it.relatech.repository.UserDao;
 
 @SpringBootApplication
+@EnableAsync
 public class Test1Application {
 
 	@Autowired
@@ -32,7 +34,7 @@ public class Test1Application {
 				User admin = new User();
 				admin.setUsername("admin");
 				admin.setPassword("admin");
-				admin.setMail("admin@admin.it");
+				admin.setMail("ciro.dalessandro@outlook.it");
 
 				userDao.save(admin);
 			}

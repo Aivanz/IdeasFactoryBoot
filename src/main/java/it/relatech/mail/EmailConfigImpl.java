@@ -9,6 +9,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +33,7 @@ public class EmailConfigImpl implements EmailConfig {
 
 	// STO USANDO QUESTO
 	@Override
+	@Async
 	public MailObject sendSimpleMessage(MailObject mailObject) {
 		try {
 			MimeMessage message = emailSender.createMimeMessage();
