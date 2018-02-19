@@ -70,8 +70,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment accept(Comment comment) {
-		Comment com = cdao.getCommentById(comment.getId());
+	public Comment accept(int id) {
+		Comment com = cdao.getCommentById(id);
 		com.setAccepted(true);
 		return update(com);
 	}

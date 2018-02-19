@@ -16,7 +16,8 @@ public interface CommentService {
 
 	List<Comment> list();
 
-	Comment accept(Comment comment);
+	Comment accept(int id);
 
 	List<Comment> listEvaluating();
+
 }

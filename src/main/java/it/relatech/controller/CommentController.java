@@ -72,14 +72,14 @@ public class CommentController {
 		}
 	}
 
-	@PutMapping("/accepting")
-	public ResponseEntity<Comment> accepted(@RequestBody Comment comment) {
+	@PutMapping("/accepting/{id}")
+	public ResponseEntity<Comment> accepted(@PathVariable("id") int id) {
 		try {
 			log.info("Saved");
-			return new ResponseEntity<Comment>(comserv.accept(comment), HttpStatus.CREATED);
+			return new ResponseEntity<Comment>(comserv.accept(id), HttpStatus.CREATED);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return new ResponseEntity<Comment>(comserv.accept(comment), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Comment>(comserv.accept(id), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

@@ -117,15 +117,18 @@ public class CommentControllerTest {
 	@Test
 	public void acceptedTest() throws Exception {
 		Comment comment = new Comment(), commentAccettato = new Comment();
+		int id = 1;
 		comment.setAccepted(false);
+		comment.setId(id);
+		commentAccettato.setId(id);
 		commentAccettato.setAccepted(true);
 
-		when(commentService.accept(comment)).thenReturn(commentAccettato);
+		when(commentService.accept(comment.getId())).thenReturn(commentAccettato);
 
 		mockMvc.perform(
 				put("/comment/accepting").contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
 				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(commentAccettato)));
-		verify(commentService, times(1)).accept(comment);
+		verify(commentService, times(1)).accept(comment.getId());
 		verifyNoMoreInteractions(commentService);
 	}
 
