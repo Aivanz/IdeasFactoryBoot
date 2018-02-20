@@ -34,7 +34,7 @@ public class Test1Application {
 				User admin = new User();
 				admin.setUsername("admin");
 				admin.setPassword("admin");
-				admin.setMail("ciro.dalessandro@outlook.it");
+				admin.setMail("admin@admin.it");
 
 				userDao.save(admin);
 			}

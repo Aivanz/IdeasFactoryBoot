@@ -2,6 +2,7 @@
 /target/
 /.classpath
 /.project
+/src/main/resources/application.properties
 /mvnw
 /mvnw.cmd
 /README.md
