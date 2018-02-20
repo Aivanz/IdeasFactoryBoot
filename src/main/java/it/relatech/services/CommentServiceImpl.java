@@ -78,6 +78,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Comment accept(int id) throws Exception {
 		Comment com = cdao.getCommentById(id);
+		com.setAccepted(true);
 		return update(com);
 	}
 
