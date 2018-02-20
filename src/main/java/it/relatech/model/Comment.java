@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -19,6 +20,7 @@ public class Comment {
 	@GeneratedValue
 	private int id;
 
+	@Size(max = 500)
 	private String text;
 
 	@JsonSerialize(using = JsonDateSerializer.class)
@@ -26,12 +28,10 @@ public class Comment {
 
 	private boolean accepted;
 
-	// @JsonIgnore
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Idea idea;
 
-	// --------------------------------------------------------------
 	public Comment() {
 		this.accepted = false;
 	}
