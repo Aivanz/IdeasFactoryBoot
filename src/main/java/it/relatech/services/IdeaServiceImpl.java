@@ -51,7 +51,6 @@ public class IdeaServiceImpl implements IdeaService {
 		idea.setDateIdea(Timestamp.from(Instant.now()));
 		temp = idao.save(idea);
 		if (!temp.isAccepted()) {
-
 			sendMail("Test idea", "E' stata creata/modificata una nuova idea");
 		}
 		return temp;
@@ -115,7 +114,7 @@ public class IdeaServiceImpl implements IdeaService {
 			idea.setVoteaverage(avg);
 			idea.setVotecounter(cont);
 
-			return update(idea);
+			return save(idea);
 		}
 
 		throw new Exception("Voto non valido");
