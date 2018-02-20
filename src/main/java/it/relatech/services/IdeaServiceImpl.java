@@ -43,9 +43,9 @@ public class IdeaServiceImpl implements IdeaService {
 	}
 
 	@Override
-	public Idea save(Idea idea) {
+	public Idea save(Idea idea) throws Exception {
 		if (idea.getText() == null)
-			return null;
+			throw new Exception("Testo idea nullo");
 
 		Idea temp = new Idea();
 		idea.setDateIdea(Timestamp.from(Instant.now()));
@@ -103,7 +103,7 @@ public class IdeaServiceImpl implements IdeaService {
 	}
 
 	@Override
-	public Idea vote(Idea c, int voto) {
+	public Idea vote(Idea c, int voto) throws Exception {
 		if (voto >= 1 && voto <= 5) {
 			Idea idea = idao.getIdeaById(c.getId());
 			double avg = idea.getVoteaverage();
@@ -118,12 +118,12 @@ public class IdeaServiceImpl implements IdeaService {
 			return update(idea);
 		}
 
-		return null;
+		throw new Exception("Voto non valido");
 
 	}
 
 	@Override
-	public Idea accept(int id) {
+	public Idea accept(int id) throws Exception {
 		Idea ide = idao.getIdeaById(id);
 		ide.setAccepted(true);
 		return save(ide);

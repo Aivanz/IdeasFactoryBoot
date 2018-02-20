@@ -39,7 +39,7 @@ public class CommentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Comment> save(@RequestBody Comment c) {
+	public ResponseEntity<Comment> save(@RequestBody Comment c) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
@@ -50,7 +50,7 @@ public class CommentController {
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<Comment> saveLink(@PathVariable("id") int id, @RequestBody Comment c) {
+	public ResponseEntity<Comment> saveLink(@PathVariable("id") int id, @RequestBody Comment c) throws Exception {
 		try {
 			c.setIdea(idserv.getById(id));
 			log.info("Saved");
@@ -62,7 +62,7 @@ public class CommentController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Comment> update(@RequestBody Comment c) {
+	public ResponseEntity<Comment> update(@RequestBody Comment c) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Comment>(comserv.update(c), HttpStatus.CREATED);
@@ -73,7 +73,7 @@ public class CommentController {
 	}
 
 	@PutMapping("/accepting/{id}")
-	public ResponseEntity<Comment> accepted(@PathVariable("id") int id) {
+	public ResponseEntity<Comment> accepted(@PathVariable("id") int id) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Comment>(comserv.accept(id), HttpStatus.CREATED);

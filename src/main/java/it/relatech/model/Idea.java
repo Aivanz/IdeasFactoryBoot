@@ -33,12 +33,10 @@ public class Idea {
 	private double voteaverage;
 	private int votecounter;
 
-	// @JsonIgnore
 	@JsonManagedReference
 	@OneToMany(mappedBy = "idea", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Comment> comlist;
 
-	// --------------------------------------------------------------
 	public Idea() {
 		this.comlist = new ArrayList<Comment>();
 		this.accepted = false;

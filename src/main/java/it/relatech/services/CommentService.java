@@ -6,9 +6,9 @@ import it.relatech.model.Comment;
 
 public interface CommentService {
 
-	Comment save(Comment comment);
+	Comment save(Comment comment) throws Exception;
 
-	Comment update(Comment comment);
+	Comment update(Comment comment) throws Exception;
 
 	Comment getId(int id);
 
@@ -16,7 +16,7 @@ public interface CommentService {
 
 	List<Comment> list();
 
-	Comment accept(int id);
+	Comment accept(int id) throws Exception;
 
 	List<Comment> listEvaluating();
 

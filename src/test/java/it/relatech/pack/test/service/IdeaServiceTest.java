@@ -53,7 +53,7 @@ public class IdeaServiceTest {
 
 	@SuppressWarnings("rawtypes")
 	@Test
-	public void saveTest() {
+	public void saveTest() throws Exception {
 		Idea idea = new Idea();
 		idea.setText(contenuto);
 
@@ -81,7 +81,7 @@ public class IdeaServiceTest {
 
 	@SuppressWarnings("rawtypes")
 	@Test
-	public void voteTest() {
+	public void voteTest() throws Exception {
 
 		int voteCounter = 1;
 		double voteAverage = 4;
@@ -112,7 +112,7 @@ public class IdeaServiceTest {
 
 	@SuppressWarnings("rawtypes")
 	@Test
-	public void acceptedTest() {
+	public void acceptedTest() throws Exception {
 
 		Idea idea = new Idea();
 		idea.setText(contenuto);

@@ -7,7 +7,7 @@ import it.relatech.model.Idea;
 
 public interface IdeaService {
 
-	Idea save(Idea idea);
+	Idea save(Idea idea) throws Exception;
 
 	Idea update(Idea idea);
 
@@ -19,9 +19,9 @@ public interface IdeaService {
 
 	List<Idea> listAccepted();
 
-	Idea vote(Idea c, int voto);
+	Idea vote(Idea c, int voto) throws Exception;
 
-	Idea accept(int id);
+	Idea accept(int id) throws Exception;
 
 	List<Comment> getListComment(int id);
 

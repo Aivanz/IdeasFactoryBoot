@@ -37,7 +37,7 @@ public class IdeaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Idea> save(@RequestBody Idea c) {
+	public ResponseEntity<Idea> save(@RequestBody Idea c) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
@@ -59,7 +59,7 @@ public class IdeaController {
 	}
 
 	@PutMapping("/vote/{voto}")
-	public ResponseEntity<Idea> vote(@RequestBody Idea c, @PathVariable("voto") int voto) {
+	public ResponseEntity<Idea> vote(@RequestBody Idea c, @PathVariable("voto") int voto) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Idea>(idserv.vote(c, voto), HttpStatus.CREATED);
@@ -70,7 +70,7 @@ public class IdeaController {
 	}
 
 	@PutMapping("/accepting/{id}")
-	public ResponseEntity<Idea> accepting(@PathVariable("id")int id) {
+	public ResponseEntity<Idea> accepting(@PathVariable("id") int id) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<Idea>(idserv.accept(id), HttpStatus.CREATED);
@@ -119,12 +119,9 @@ public class IdeaController {
 			log.info("Deleted");
 			idserv.deleteId(id);
 			return new ResponseEntity<Idea>(HttpStatus.OK);
-			// return new ResponseEntity<Idea>(idserv.deleteId(id), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Idea>(HttpStatus.INTERNAL_SERVER_ERROR);
-			// return new ResponseEntity<Idea>(idserv.deleteId(id),
-			// HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

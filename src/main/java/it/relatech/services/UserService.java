@@ -7,9 +7,9 @@ import it.relatech.model.User;
 
 public interface UserService {
 
-	User save(User user);
+	User save(User user) throws Exception;
 
-	User update(User user);
+	User update(User user) throws Exception;
 
 	List<User> getList();
 

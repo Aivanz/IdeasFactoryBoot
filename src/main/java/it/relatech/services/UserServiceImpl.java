@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	private UserDao usdao;
 
 	@Override
-	public User save(User user) {
+	public User save(User user) throws Exception {
 		// Controllo mail
 		String mail = user.getMail();
 		String pattern = "^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$";
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 		if (matcher.matches())
 			return usdao.save(user);
 		else
-			return null;
+			throw new Exception("Formato mail non valido");
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User update(User user) {
+	public User update(User user) throws Exception {
 		User oldUser = usdao.getById(user.getId());
 
 		if (user.getMail() == null)

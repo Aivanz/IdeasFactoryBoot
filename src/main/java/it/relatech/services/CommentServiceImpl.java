@@ -41,9 +41,9 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment save(Comment comment) {
+	public Comment save(Comment comment) throws Exception {
 		if (comment.getText() == null)
-			return null;
+			throw new Exception("Testo commento nullo");
 
 		Comment temp = new Comment();
 		comment.setDateComment(Timestamp.from(Instant.now()));
@@ -76,14 +76,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment accept(int id) {
+	public Comment accept(int id) throws Exception {
 		Comment com = cdao.getCommentById(id);
 		com.setAccepted(true);
 		return update(com);
 	}
 
 	@Override
-	public Comment update(Comment comment) {
+	public Comment update(Comment comment) throws Exception {
 		Comment temp = new Comment();
 		temp = save(comment);
 		return temp;

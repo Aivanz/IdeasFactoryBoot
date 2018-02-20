@@ -56,7 +56,7 @@ public class UserController {
 
 	// POST
 	@PostMapping
-	public ResponseEntity<User> saveUpdate(@RequestBody User user) {
+	public ResponseEntity<User> saveUpdate(@RequestBody User user) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<User>(userv.save(user), HttpStatus.CREATED);
@@ -69,7 +69,8 @@ public class UserController {
 
 	// PUT
 	@PutMapping("/{id}")
-	public ResponseEntity<User> update(@RequestBody User user, @PathVariable("id") int id, Principal principal) {
+	public ResponseEntity<User> update(@RequestBody User user, @PathVariable("id") int id, Principal principal)
+			throws Exception {
 		try {
 			if (userv.checkAuth(principal, id)) {
 				user.setId(id);
