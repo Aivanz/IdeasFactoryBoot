@@ -132,7 +132,6 @@ public class IdeaServiceImpl implements IdeaService {
 	public Idea update(Idea idea) {
 		Idea temp = new Idea();
 		idea.setDateIdea(Timestamp.from(Instant.now()));
-		idea.setAccepted(false);
 		temp = idao.save(idea);
 		return temp;
 	}

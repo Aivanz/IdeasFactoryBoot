@@ -52,17 +52,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.csrf().disable().httpBasic().and().authorizeRequests()
 				.antMatchers("/login").permitAll()
-				.antMatchers(HttpMethod.GET.POST.PUT, "/idea/**").permitAll()
+				.antMatchers(HttpMethod.GET.POST, "/idea/**").permitAll()
 				.antMatchers(HttpMethod.GET.POST, "/comment/**").permitAll()
 				.antMatchers(HttpMethod.PUT.DELETE, "/idea/**").access("hasRole('ROLE_ADMIN')")
 				.antMatchers(HttpMethod.PUT.DELETE, "/comment/**").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/user/**").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/idea/vote/{vote}").permitAll()
 				.antMatchers("/idea/evaluating").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/idea/accepting").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/comment/").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/comment/accepting").access("hasRole('ROLE_ADMIN')")
 				.and().logout().permitAll();
-//				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
 
 }
