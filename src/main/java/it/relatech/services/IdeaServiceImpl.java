@@ -44,6 +44,9 @@ public class IdeaServiceImpl implements IdeaService {
 
 	@Override
 	public Idea save(Idea idea) {
+		if (idea.getText() == null)
+			return null;
+
 		Idea temp = new Idea();
 		idea.setDateIdea(Timestamp.from(Instant.now()));
 		temp = idao.save(idea);

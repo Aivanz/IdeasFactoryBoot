@@ -42,11 +42,14 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public Comment save(Comment comment) {
+		if (comment.getText() == null)
+			return null;
+
 		Comment temp = new Comment();
 		comment.setDateComment(Timestamp.from(Instant.now()));
 		temp = cdao.save(comment);
 		if (!temp.isAccepted()) {
-			
+
 			sendMail("Test commento", "E' stata creato/modificato un nuovo commento");
 		}
 		return temp;
