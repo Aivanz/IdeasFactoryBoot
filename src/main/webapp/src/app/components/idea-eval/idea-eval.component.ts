@@ -12,7 +12,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 export class IdeaEvalComponent implements OnInit {
   
   @Input() idea: Idea;
-  @Output() onChangeIdea: EventEmitter = new EventEmitter();
+  @Output() onChangeIdea: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   constructor(private service: IdeaService, private spinnerService: Ng4LoadingSpinnerService) { }
 
@@ -26,7 +26,7 @@ export class IdeaEvalComponent implements OnInit {
       this.service.accept(this.idea).subscribe(
         (response) => {
           this.spinnerService.hide();
-          this.onChangeIdea.emit("");
+          this.onChangeIdea.emit(true);
           //this.listIdeas();
         },
         (err) => {
@@ -43,7 +43,7 @@ export class IdeaEvalComponent implements OnInit {
       this.service.reject(this.idea.id).subscribe(
         (response) => {
           this.spinnerService.hide();
-          this.onChangeIdea.emit("");
+          this.onChangeIdea.emit(true);
           //this.listIdeas();
         },
         (err) => {
