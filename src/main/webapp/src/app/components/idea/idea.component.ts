@@ -1,7 +1,7 @@
 import { AuthService } from './../../service/auth.service';
 import { IdeaService } from './../../service/idea.service';
 import { Idea } from "./../../model/idea";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
@@ -13,6 +13,8 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 export class IdeaComponent implements OnInit {
   @Input() idea : Idea;
   @Input() color;
+  @Output() onDeleteIdea: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+
   colors: Array<string> = [
     "bg-primary",
     "bg-success",
@@ -33,8 +35,16 @@ export class IdeaComponent implements OnInit {
   }
 
   deleteIdea() {
+    this.spinnerService.show();
     this.service.deleteIdea(this.idea).subscribe(
       (response) => {
+        this.spinnerService.hide();
+        alert("Idea deleted successfully");
+        this.onDeleteIdea.emit(true);
+      },
+      (err) => {
+        this.spinnerService.hide();
+        alert("Error delete");
       }
     );
   }

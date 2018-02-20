@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div *ngFor="let idea of ideas; let i = index">
-    <app-idea [idea]="idea" [color]="i"></app-idea>
+    <app-idea (onDeleteIdea)="listIdeas()" [idea]="idea" [color]="i"></app-idea>
     <br>
   </div>
 </div>
