@@ -1,7 +1,7 @@
 export class Comment {
   id: number;
   text: string;
-  dateComment: any;
+  dateComment: Date;
   accepted: boolean;
 
   constructor() {}

@@ -12,10 +12,14 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 export class IdeaInsertComponent implements OnInit {
   idea: Idea = new Idea();
 
+  textareaLength: number;
+
   constructor(private service: IdeaService, private router: Router,
     private spinnerService: Ng4LoadingSpinnerService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.textareaLength = 500;
+  }
   newIdea() {
     this.spinnerService.show();
     this.service.createIdea(this.idea).subscribe (

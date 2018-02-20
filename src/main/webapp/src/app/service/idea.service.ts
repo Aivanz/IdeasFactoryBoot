@@ -28,7 +28,7 @@ export class IdeaService {
   }
 
   updateIdea(idea: Idea) {
-    alert('aggiornato');
+    return this.http.put<Idea>(this.URI_IDEA, idea);
   }
 
   deleteIdea(idea: Idea) {
@@ -38,7 +38,12 @@ export class IdeaService {
   accept(idea: Idea) {
     return this.http.put<Idea>(this.URI_IDEA + '/accepting/'+idea.id, idea);
   }
+
   reject(id: number) {
     return this.http.delete<Idea>(this.URI_IDEA + '/' + id);
+  }
+
+  vote(idea: Idea, vote: number) {
+    return this.http.put<Idea>(this.URI_IDEA + '/vote/'+vote, idea);
   }
 }

@@ -3,11 +3,11 @@ import { Comment } from './comment';
 export class Idea {
   id: number;
   text: string;
-  date: any;
+  dateIdea: Date;
   accepted: boolean;
-  voteAverage: number;
-  voteCounter: number;
-  commentsList: Array<Comment>;
+  voteaverage: number;
+  votecounter: number;
+  comlist: Array<Comment>;
 
   constructor() {}
 }

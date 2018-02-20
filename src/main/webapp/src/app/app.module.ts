@@ -2,6 +2,7 @@ import { RouteGuardService } from './service/route-guard.service';
 import { AuthService } from './service/auth.service';
 import { CommentService } from './service/comment.service';
 import { IdeaService } from './service/idea.service';
+import { UserService } from './service/user.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,6 +29,9 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component';
 
 
+import { EqualValidator } from './util/equal-validator.directive';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +46,8 @@ import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component
     UserComponent,
     IdeaEvalComponent,
     CommentEvalComponent,
-    IdeasEvalComponent
+    IdeasEvalComponent,
+    EqualValidator 
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,8 @@ import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component
     IdeaService,
     CommentService,
     AuthService,
-    RouteGuardService
+    RouteGuardService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

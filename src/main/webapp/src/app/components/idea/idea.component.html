@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-12 text-right">
-        <small>{{idea.date}}</small>
+        <small>{{idea.dateIdea}}</small>
       </div>
     </div>
     <div class="row">
@@ -14,7 +14,7 @@
   <div class="card-footer">
     <div class="row">
       <div class="col-md-6">
-        <ngb-rating [max]="5"></ngb-rating>
+        <ngb-rating [(rate)]="idea.voteaverage" (hover)="hovered=$event" (click)="vote(hovered)" [max]="5"></ngb-rating>
       </div>
       <div class="col-md-6 text-right">
         <span *ngIf="isUserLoggedIn()">

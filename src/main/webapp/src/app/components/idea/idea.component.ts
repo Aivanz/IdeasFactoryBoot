@@ -3,6 +3,7 @@ import { IdeaService } from './../../service/idea.service';
 import { Idea } from "./../../model/idea";
 import { Component, OnInit, Input } from "@angular/core";
 import { Router } from "@angular/router";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: "app-idea",
@@ -10,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./idea.component.css"]
 })
 export class IdeaComponent implements OnInit {
-  @Input() idea;
+  @Input() idea : Idea;
   @Input() color;
   colors: Array<string> = [
     "bg-primary",
@@ -19,10 +20,17 @@ export class IdeaComponent implements OnInit {
     "bg-warning",
     "bg-info"
   ];
+  currentRate: number;
 
-  constructor(private service: IdeaService, private auth: AuthService, private router: Router) {}
+  constructor(
+    private service: IdeaService, 
+    private auth: AuthService, 
+    private router: Router,
+    private spinnerService: Ng4LoadingSpinnerService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   deleteIdea() {
     this.service.deleteIdea(this.idea).subscribe(
@@ -30,13 +38,33 @@ export class IdeaComponent implements OnInit {
       }
     );
   }
+
   modifyIdea() {
     this.router.navigate(['idea', this.idea.id, 'edit']);
   }
+
   commentIdea() {
     this.router.navigate(['idea', this.idea.id, 'comments']);
   }
+
   isUserLoggedIn(): boolean {
     return this.auth.isUserLoggedIn();
+  }
+
+  vote(vote: number) {
+    this.idea.comlist = null;
+    this.idea.dateIdea = null;
+    this.spinnerService.show();
+    this.service.vote(this.idea, vote).subscribe(
+      (response) => {
+        this.spinnerService.hide();
+        alert('Vote received');
+        this.idea.voteaverage = response.voteaverage;
+      },
+      (err) => {
+        this.spinnerService.hide();
+        alert('Error');
+      }
+    );
   }
 }

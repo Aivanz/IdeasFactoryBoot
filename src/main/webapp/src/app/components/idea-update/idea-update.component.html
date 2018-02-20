@@ -4,5 +4,5 @@
       <hr>
       <textarea [(ngModel)]="idea.text" class="form-control" rows="3" [ngModelOptions]="{standalone: true}"></textarea>
     </div>
-    <a class="btn btn-primary text-white" routerLink="">Submit</a>
+    <a class="btn btn-primary text-white" (click)="updateIdea()">Submit</a>
 </form>
