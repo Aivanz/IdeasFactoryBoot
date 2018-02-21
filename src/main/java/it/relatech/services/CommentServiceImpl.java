@@ -84,9 +84,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public Comment update(Comment comment) throws Exception {
-		Comment temp = new Comment();
-		temp = save(comment);
-		return temp;
+		Comment temp = cdao.getCommentById(comment.getId());
+		temp.setText(comment.getText());
+		return cdao.save(temp);
 	}
 
 }
