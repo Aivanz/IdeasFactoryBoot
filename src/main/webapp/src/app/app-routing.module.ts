@@ -12,13 +12,9 @@ import { IdeaUpdateComponent } from './components/idea-update/idea-update.compon
 import { CommentUpdateComponent } from './components/comment-update/comment-update.component';
 
 const routes: Routes = [
+
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'idea'
-  },
-  {
-    path: 'idea',
     pathMatch: 'full',
     component: IdeasComponent
   },
@@ -68,7 +64,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
