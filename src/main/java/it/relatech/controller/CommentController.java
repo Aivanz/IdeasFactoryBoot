@@ -83,6 +83,17 @@ public class CommentController {
 		}
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<Comment> getById(@PathVariable("id") int id) throws Exception {
+		try {
+			log.info("Saved");
+			return new ResponseEntity<Comment>(comserv.getById(id), HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<Comment>(comserv.getById(id), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@GetMapping
 	public ResponseEntity<List<Comment>> listEvaluating() {
 		try {

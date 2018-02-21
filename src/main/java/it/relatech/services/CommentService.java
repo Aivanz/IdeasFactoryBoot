@@ -10,7 +10,7 @@ public interface CommentService {
 
 	Comment update(Comment comment) throws Exception;
 
-	Comment getId(int id);
+	Comment getById(int id);
 
 	void deleteId(int id);
 
