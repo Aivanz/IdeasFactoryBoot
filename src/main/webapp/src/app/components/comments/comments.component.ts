@@ -18,6 +18,8 @@ export class CommentsComponent implements OnInit {
   comments: Array<Comment>;
   fullComments: boolean;
 
+  textareaLength: number;
+
   constructor(
     private ideaService: IdeaService,
     private commentService: CommentService,
@@ -27,6 +29,7 @@ export class CommentsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.textareaLength = 500;
     this.route.params.subscribe(params => {
       this.ideaService.readIdeas(+params.id).subscribe (
         (response) => {

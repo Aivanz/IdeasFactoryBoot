@@ -30,6 +30,7 @@ import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component
 
 
 import { EqualValidator } from './util/equal-validator.directive';
+import { CommentUpdateComponent } from './components/comment-update/comment-update.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { EqualValidator } from './util/equal-validator.directive';
     IdeaEvalComponent,
     CommentEvalComponent,
     IdeasEvalComponent,
-    EqualValidator 
+    EqualValidator,
+    CommentUpdateComponent 
   ],
   imports: [
     BrowserModule,

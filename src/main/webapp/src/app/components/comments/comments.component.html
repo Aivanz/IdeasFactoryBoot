@@ -10,15 +10,19 @@
             <h3>Comment</h3>
           </div>
           <div class="panel-body">
-            <textarea [(ngModel)]="comment.text" class="form-control" placeholder="Enter here for comment..." rows="3"></textarea>
+            <textarea [maxLength]="textareaLength" [(ngModel)]="comment.text" class="form-control" placeholder="Enter here for comment..."
+              rows="3"></textarea>
             <br />
-            <a href="#" class="btn btn-primary btn-sm pull-right" (click)="newComment($event)">Comment</a>
+            <a href="#" class="btn btn-primary btn-sm pull-left" (click)="newComment($event)">Comment</a>
+            <span class="text-right">
+              <small class="form-text text-muted">{{comment.text!=null ? comment.text.length : 0 }}/{{textareaLength}}</small>
+            </span>
             <div class="clearfix"></div>
             <hr />
             <div class="container-fluid">
               <ul class="media-list">
                 <li class="media" *ngFor="let comment of comments">
-                  <app-comment [comment]="comment"></app-comment>
+                  <app-comment (onDeleteComment)="listComments(this.idea.id)" [comment]="comment"></app-comment>
                 </li>
               </ul>
             </div>

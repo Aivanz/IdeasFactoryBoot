@@ -13,15 +13,17 @@ import { Router } from '@angular/router';
 export class IdeaUpdateComponent implements OnInit {
   idea: Idea = new Idea();
 
+  textareaLength: number;
+
   constructor(
     private service: IdeaService, 
     private route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit() {
-
+    this.textareaLength = 500;
     this.route.params.subscribe(
       (params) => {
         this.service.readIdeas(+params.id).subscribe(

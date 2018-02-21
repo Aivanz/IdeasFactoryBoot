@@ -1,0 +1,17 @@
+<form class="container-fluid w-75 mx-auto">
+  <div class="form-group">
+    <h3>Update Comment</h3>
+    <hr>
+    <textarea [maxLength]="textareaLength" [(ngModel)]="comment.text" class="form-control" rows="3" [ngModelOptions]="{standalone: true}"></textarea>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <a class="btn btn-primary text-white" (click)="updateComment()">Add</a>
+    </div>
+    <div class="col-md-6">
+      <span class="text-right">
+        <small class="form-text text-muted">{{comment.text!=null ? comment.text.length : 0 }}/{{textareaLength}}</small>
+      </span>
+    </div>
+  </div>
+</form>

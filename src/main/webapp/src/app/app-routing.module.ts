@@ -9,6 +9,7 @@ import { IdeasComponent } from './components/ideas/ideas.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 import { IdeaUpdateComponent } from './components/idea-update/idea-update.component';
+import { CommentUpdateComponent } from './components/comment-update/comment-update.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,11 @@ const routes: Routes = [
     path: 'idea/:id/edit',
     pathMatch: 'full',
     component: IdeaUpdateComponent
+  },
+  {
+    path: 'comment/:id/edit',
+    pathMatch: 'full',
+    component: CommentUpdateComponent
   },
   {
     path: 'admin/edit',
