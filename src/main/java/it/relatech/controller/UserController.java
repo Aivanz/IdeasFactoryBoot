@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,8 +88,8 @@ public class UserController {
 
 	// DELETE
 	@DeleteMapping("/{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable("id") int id, Principal principal,
-			HttpServletRequest request) {
+	public ResponseEntity<User> deleteUser(@PathVariable("id") int id, Principal principal, HttpServletRequest request,
+			HttpServletResponse response) {
 		try {
 			if (userv.checkAuth(principal, id)) {
 				log.info("Deleted");
@@ -96,7 +97,7 @@ public class UserController {
 
 				// Logout obbligatorio in quanto, una volta cancellato l'user, mantiene attiva
 				// la sessione
-				authController.logoutPage(request);
+				authController.logoutPage(request, response);
 				return new ResponseEntity<User>(HttpStatus.OK);
 			} else
 				return new ResponseEntity<User>(HttpStatus.METHOD_NOT_ALLOWED);
