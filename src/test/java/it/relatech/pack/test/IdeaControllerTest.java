@@ -128,7 +128,8 @@ public class IdeaControllerTest {
 
 		when(ideaService.accept(id)).thenReturn(ideaAccettata);
 
-		mockMvc.perform(put("/idea/accepting/").contentType(MediaType.APPLICATION_JSON).content(asJSonString(idea)))
+		mockMvc.perform(
+				put("/idea/accepting/{id}", id).contentType(MediaType.APPLICATION_JSON).content(asJSonString(idea)))
 				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(ideaAccettata)));
 
 		verify(ideaService, times(1)).accept(id);
@@ -140,11 +141,11 @@ public class IdeaControllerTest {
 	public void listTest() throws Exception {
 		List<Idea> listaCompleta = new LinkedList<>();
 
-		when(ideaService.list()).thenReturn(listaCompleta);
+		when(ideaService.listNotAccepted()).thenReturn(listaCompleta);
 
 		mockMvc.perform(get("/idea/evaluating/")).andExpect(status().isOk())
 				.andExpect(content().string(asJSonString(listaCompleta)));
-		verify(ideaService, times(1)).list();
+		verify(ideaService, times(1)).listNotAccepted();
 		verifyNoMoreInteractions(ideaService);
 	}
 

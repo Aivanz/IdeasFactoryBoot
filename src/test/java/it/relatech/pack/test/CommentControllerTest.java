@@ -125,9 +125,9 @@ public class CommentControllerTest {
 
 		when(commentService.accept(comment.getId())).thenReturn(commentAccettato);
 
-		mockMvc.perform(
-				put("/comment/accepting").contentType(MediaType.APPLICATION_JSON).content(asJSonString(comment)))
-				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(commentAccettato)));
+		mockMvc.perform(put("/comment/accepting/{id}", id).contentType(MediaType.APPLICATION_JSON)
+				.content(asJSonString(comment))).andExpect(status().isCreated())
+				.andExpect(content().string(asJSonString(commentAccettato)));
 		verify(commentService, times(1)).accept(comment.getId());
 		verifyNoMoreInteractions(commentService);
 	}

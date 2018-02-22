@@ -12,8 +12,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.relatech.controller.AuthController;
 import it.relatech.controller.UserController;
 import it.relatech.model.User;
 import it.relatech.services.UserService;
@@ -35,7 +39,16 @@ public class UserControllerTest {
 	private MockMvc mockMvc;
 
 	@Mock
+	private HttpServletRequest request;
+
+	@Mock
+	private Principal principal;
+
+	@Mock
 	private UserService userService;
+
+	@Mock
+	private AuthController authController;
 
 	@InjectMocks
 	private UserController userController;
@@ -86,10 +99,13 @@ public class UserControllerTest {
 		User user = new User();
 		int id = 1;
 
+		when(userService.checkAuth(principal, id)).thenReturn(true);
 		when(userService.update(user)).thenReturn(user);
 
-		mockMvc.perform(put("/user/{id}", id).contentType(MediaType.APPLICATION_JSON).content(asJSonString(user)))
-				.andExpect(status().isCreated()).andExpect(content().string(asJSonString(user)));
+		mockMvc.perform(put("/user/{id}", id).contentType(MediaType.APPLICATION_JSON).content(asJSonString(user))
+				.principal(principal)).andExpect(status().isCreated()).andExpect(content().string(asJSonString(user)));
+
+		verify(userService, times(1)).checkAuth(principal, id);
 		verify(userService, times(1)).update(user);
 		verifyNoMoreInteractions(userService);
 	}
@@ -99,9 +115,13 @@ public class UserControllerTest {
 	public void deleteTest() throws Exception {
 		int id = 1;
 
+		when(userService.checkAuth(principal, id)).thenReturn(true);
+		doNothing().when(authController).logoutPage(request);
 		doNothing().when(userService).delete(id);
 
-		mockMvc.perform(delete("/user/{id}", id)).andExpect(status().isOk());
+		mockMvc.perform(delete("/user/{id}", id).principal(principal)).andExpect(status().isOk());
+
+		verify(userService, times(1)).checkAuth(principal, id);
 		verify(userService, times(1)).delete(id);
 		verifyNoMoreInteractions(userService);
 	}
