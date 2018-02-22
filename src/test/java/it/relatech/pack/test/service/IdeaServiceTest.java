@@ -94,6 +94,8 @@ public class IdeaServiceTest {
 		idea.setVotecounter(voteCounter);
 		idea.setVoteaverage(voteAverage);
 
+		when(userDao.findAll()).thenReturn(new ArrayList<User>());
+		
 		when(idao.save(any(Idea.class))).thenAnswer(new Answer() {
 			public Object answer(InvocationOnMock invocation) {
 				return invocation.getArguments()[0];
@@ -155,9 +157,8 @@ public class IdeaServiceTest {
 		// Controlliamo che l'idea ritornata non sia accettata
 		// e che la data sia maggiore di quella iniziale
 		Idea ideaReturn = ideaService.update(idea);
-		assertEquals(false, ideaReturn.isAccepted());
-		boolean result = time.before(ideaReturn.getDateIdea());
-		assertTrue(!result);
+		assertEquals(true, ideaReturn.isAccepted());
+		assertTrue(time.getTime()<=ideaReturn.getDateIdea().getTime());
 	}
 
 	@Test
