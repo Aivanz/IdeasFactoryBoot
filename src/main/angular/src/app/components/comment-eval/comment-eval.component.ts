@@ -26,7 +26,7 @@ export class CommentEvalComponent implements OnInit {
     );
   }
   accept(comment: Comment) {
-    if (confirm("Are you sure to accept the comment?")){
+    if (confirm('Are you sure to accept the comment?')) {
       this.spinnerService.show();
       this.service.accept(comment).subscribe(
         (response) => {

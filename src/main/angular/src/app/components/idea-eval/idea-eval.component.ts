@@ -10,18 +10,15 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
   styleUrls: ['./idea-eval.component.css']
 })
 export class IdeaEvalComponent implements OnInit {
-  
   @Input() idea: Idea;
   @Output() onChangeIdea: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   constructor(private service: IdeaService, private spinnerService: Ng4LoadingSpinnerService) { }
 
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
   accept() {
-    if (confirm("Are you sure to accept the idea?")){
+    if (confirm('Are you sure to accept the idea?')){
       this.spinnerService.show();
       this.service.accept(this.idea).subscribe(
         (response) => {

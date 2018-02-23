@@ -19,12 +19,10 @@
             </span>
             <div class="clearfix"></div>
             <hr />
-            <div class="container-fluid">
-              <ul class="media-list">
-                <li class="media" *ngFor="let comment of comments">
-                  <app-comment (onDeleteComment)="listComments(this.idea.id)" [comment]="comment"></app-comment>
-                </li>
-              </ul>
+            <div class="container w-100">
+              <div class="breadcrumb" *ngFor="let comment of comments">
+                <app-comment (onDeleteComment)="listComments(this.idea.id)" [comment]="comment"></app-comment>
+              </div>
             </div>
           </div>
         </div>

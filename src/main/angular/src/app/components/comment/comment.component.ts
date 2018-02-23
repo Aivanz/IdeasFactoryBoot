@@ -17,7 +17,7 @@ export class CommentComponent implements OnInit {
   constructor(
     private service: CommentService,
     private spinnerService: Ng4LoadingSpinnerService,
-    private router: Router,
+    public router: Router,
     private authService: AuthService
   ) { }
 
