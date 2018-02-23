@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -49,7 +50,7 @@ import { CommentUpdateComponent } from './components/comment-update/comment-upda
     CommentEvalComponent,
     IdeasEvalComponent,
     EqualValidator,
-    CommentUpdateComponent 
+    CommentUpdateComponent
   ],
   imports: [
     BrowserModule,
