@@ -17,7 +17,7 @@
         <ngb-rating [(rate)]="idea.voteaverage" (hover)="hovered=$event" (click)="vote(hovered)" [max]="5"></ngb-rating>
       </div>
       <div class="col-md-5 text-left">
-        <small>{{idea.voteaverage| number:'1.0-1'}}</small>
+        <small>{{idea.voteaverage!=0 ? (idea.voteaverage| number:'1.0-1') : ''}}</small>
       </div>
       <div class="col-md-6 text-right">
         <span *ngIf="isUserLoggedIn()">
