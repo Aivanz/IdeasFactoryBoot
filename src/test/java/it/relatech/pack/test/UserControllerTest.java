@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,9 @@ public class UserControllerTest {
 
 	@Mock
 	private HttpServletRequest request;
+
+	@Mock
+	private HttpServletResponse response;
 
 	@Mock
 	private Principal principal;
@@ -116,7 +120,7 @@ public class UserControllerTest {
 		int id = 1;
 
 		when(userService.checkAuth(principal, id)).thenReturn(true);
-		doNothing().when(authController).logoutPage(request);
+		doNothing().when(authController).logoutPage(request, response);
 		doNothing().when(userService).delete(id);
 
 		mockMvc.perform(delete("/user/{id}", id).principal(principal)).andExpect(status().isOk());

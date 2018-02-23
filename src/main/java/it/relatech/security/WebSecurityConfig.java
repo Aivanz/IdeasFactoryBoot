@@ -59,10 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/**").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/idea/vote/{vote}").permitAll()
 				.antMatchers("/idea/evaluating").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/idea/accepting").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/idea/accepting/{id}").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/comment/").access("hasRole('ROLE_ADMIN')")
-				.antMatchers("/comment/accepting").access("hasRole('ROLE_ADMIN')")
-				.and().logout().permitAll();
+				.antMatchers("/comment/accepting/{id}").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/logout").access("hasRole('ROLE_ADMIN')");
 	}
 
 }
