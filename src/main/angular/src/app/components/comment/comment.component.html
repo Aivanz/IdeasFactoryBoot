@@ -2,9 +2,9 @@
   <a href="#" class="pull-left">
     <img src="../../../assets/img/user.png" alt="" class="img-circle maxwidth" />
   </a>
-  <span class="text-muted pull-right">
+  <span class="text-muted pull-right" *ngIf="isUserLoggedIn()">
     <small class="text-muted">{{comment.dateComment}}</small>
-    <button type="button" class="btn btn-link" alt="Modify" (click)="modifyComment()">
+    <button  class="btn btn-link" alt="Modify" (click)="modifyComment()">
       <fa name="edit" alt="Modify"></fa>
     </button>|
     <button type="button" class="btn btn-link" alt="Delete" (click)="deleteComment()">
@@ -18,32 +18,3 @@
   </div>
 
 </div>
-
-
-<!--<div class="row">
-
-  <div class="col-md-3">
-    <a href="#" class="pull-left">
-      <img src="../../../assets/img/user.png" alt="" class="img-circle maxwidth" />
-    </a>
-  </div>
-
-  <div class="col-md-9">
-    <div class="row">
-      <div class="col-md-3">
-        <strong class="text-success">@User &nbsp;&nbsp;&nbsp;</strong>
-      </div>
-      <div class="col-md-9">
-        <span class="text-muted pull-right">
-          <small class="text-muted">{{comment.dateComment}}</small>
-        </span>
-      </div>
-    </div>
-    <div class="row">
-      <p>
-        {{comment.text}}
-      </p>
-    </div>
-  </div>
-
-</div>-->

@@ -2,7 +2,8 @@ import { Comment } from './../../model/comment';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { CommentService } from './../../service/comment.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-comment',
@@ -16,8 +17,8 @@ export class CommentComponent implements OnInit {
   constructor(
     private service: CommentService,
     private spinnerService: Ng4LoadingSpinnerService,
-    private router: Router
-
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class CommentComponent implements OnInit {
   }
 
   deleteComment() {
-    if (confirm("Are you sure to delete the comment?")){
+    if (confirm('Are you sure to delete the comment?')){
       this.spinnerService.show();
       this.service.reject(this.comment.id).subscribe(
         (response) => {
@@ -40,6 +41,10 @@ export class CommentComponent implements OnInit {
         }
       );
     }
+  }
+
+  isUserLoggedIn(): boolean {
+    return this.authService.isUserLoggedIn();
   }
 
 }

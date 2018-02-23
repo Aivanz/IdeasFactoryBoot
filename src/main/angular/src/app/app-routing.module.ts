@@ -26,12 +26,16 @@ const routes: Routes = [
   {
     path: 'idea/:id/edit',
     pathMatch: 'full',
-    component: IdeaUpdateComponent
+    component: IdeaUpdateComponent,
+    canActivate: [RouteGuardService]
+
   },
   {
     path: 'comment/:id/edit',
     pathMatch: 'full',
-    component: CommentUpdateComponent
+    component: CommentUpdateComponent,
+    canActivate: [RouteGuardService]
+
   },
   {
     path: 'admin/edit',
