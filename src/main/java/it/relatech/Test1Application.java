@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import it.relatech.model.User;
-import it.relatech.repository.UserDao;
+import it.relatech.services.UserService;
 
 @SpringBootApplication
 @EnableAsync
 public class Test1Application {
 
 	@Autowired
-	private UserDao userDao;
+	private UserService userService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Test1Application.class, args);
@@ -28,7 +28,7 @@ public class Test1Application {
 	InitializingBean sendDatabase() {
 		return () -> {
 			List<User> userList = new LinkedList<>();
-			userList = (List<User>) userDao.findAll();
+			userList = (List<User>) userService.getList();
 
 			if (userList.isEmpty()) {
 				User admin = new User();
@@ -36,7 +36,7 @@ public class Test1Application {
 				admin.setPassword("admin");
 				admin.setMail("admin@admin.it");
 
-				userDao.save(admin);
+				userService.save(admin);
 			}
 		};
 	}

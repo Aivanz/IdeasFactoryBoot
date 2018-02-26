@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { DecimalPipe } from '@angular/common';
 
@@ -32,6 +32,9 @@ import { IdeasEvalComponent } from './components/ideas-eval/ideas-eval.component
 
 import { EqualValidator } from './util/equal-validator.directive';
 import { CommentUpdateComponent } from './components/comment-update/comment-update.component';
+
+import { InterceptorHttp } from './util/interceptor-http';
+import { JwtModule } from '@auth0/angular-jwt'
 
 
 @NgModule({
@@ -60,14 +63,27 @@ import { CommentUpdateComponent } from './components/comment-update/comment-upda
     HttpClientModule,
     CommonModule,
     NgbModule.forRoot(),
-    Ng4LoadingSpinnerModule.forRoot()
+    Ng4LoadingSpinnerModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+        whitelistedDomains: ['']
+      }
+    })
   ],
   providers: [
     IdeaService,
     CommentService,
     AuthService,
     RouteGuardService,
-    UserService
+    UserService,
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: InterceptorHttp, 
+      multi: true 
+    } 
   ],
   bootstrap: [AppComponent]
 })

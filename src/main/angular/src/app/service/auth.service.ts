@@ -1,20 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { User } from './../model/user';
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthService {
   private URI_AUTH = '/login';
   private URI_AUTH_OUT = '/logout/';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    public jwtHelperService: JwtHelperService
+  ) {}
+  
   isUserLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    const token: string = this.jwtHelperService.tokenGetter()
+
+    if (!token) {
+      return false
+    }
+    const tokenExpired: boolean = this.jwtHelperService.isTokenExpired(token)
+    return !tokenExpired
   }
+  
   logIn(user: User): void {
     this.http.post(this.URI_AUTH, user, { observe: 'response' }).subscribe(
       (response) => {
-        localStorage.setItem('token', user.username);
+        localStorage.setItem('user', user.username);
+        localStorage.setItem('token', response.headers.get('Authorization'));
       },
       (err) => {
         alert('Username or password is wrong');
@@ -22,15 +35,8 @@ export class AuthService {
     );
   }
   logOut(): void {
-    alert('Sto effettuando il logout');
-    this.http.post(this.URI_AUTH_OUT, new User()).subscribe (
-      (response) => {
-        alert('Logout');
-      },
-      (err) => {
-        alert ('Error logout');
-      }
-    );
+    this.http.post(this.URI_AUTH_OUT, new User());
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
   }
 }

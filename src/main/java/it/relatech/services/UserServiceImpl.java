@@ -6,10 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import it.relatech.repository.UserDao;
 import it.relatech.model.User;
+import it.relatech.repository.UserDao;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao usdao;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public User save(User user) throws Exception {
 		// Controllo mail
@@ -25,6 +29,8 @@ public class UserServiceImpl implements UserService {
 		Pattern r = Pattern.compile(pattern);
 		Matcher matcher = r.matcher(mail);
 
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		
 		if (matcher.matches())
 			return usdao.save(user);
 		else

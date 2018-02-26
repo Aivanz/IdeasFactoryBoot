@@ -11,7 +11,9 @@ export class RouteGuardService implements CanActivate {
     if (this.auth.isUserLoggedIn()) {
       return true;
     } else {
+      localStorage.removeItem('token');
       this.router.navigate(['login']);
+      return false;
     }
   }
 }
