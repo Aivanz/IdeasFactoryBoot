@@ -39,6 +39,8 @@ public class IdeaController {
 	@PostMapping
 	public ResponseEntity<Idea> save(@RequestBody Idea c) throws Exception {
 		try {
+			if(c.getId() != 0)
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			log.info("Saved");
 			return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
 		} catch (Exception e) {
