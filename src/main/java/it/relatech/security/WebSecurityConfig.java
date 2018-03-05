@@ -84,6 +84,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.DELETE, "/idea/**").authenticated()
 			.antMatchers(HttpMethod.PUT, "/comment/**").authenticated()
 			.antMatchers(HttpMethod.DELETE, "/comment/**").authenticated()
+			.antMatchers(HttpMethod.GET, "/password/**").permitAll()
+			.antMatchers(HttpMethod.POST, "/password/**").permitAll()
 			.antMatchers("/user/**").authenticated()
 			.antMatchers("/idea/evaluating").authenticated()
 			.antMatchers("/idea/accepting/{id}").authenticated()

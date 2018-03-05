@@ -44,6 +44,8 @@ public class IdeaServiceImpl implements IdeaService {
 
 	@Override
 	public Idea save(Idea idea) throws Exception {
+		if(idea.getId() != 0)
+			return idea;
 		if (idea.getText() == null)
 			throw new Exception("Testo idea nullo");
 
