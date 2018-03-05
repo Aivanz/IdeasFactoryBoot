@@ -41,7 +41,7 @@ public class CommentController {
 	@PostMapping
 	public ResponseEntity<Comment> save(@RequestBody Comment c) throws Exception {
 		try {
-			if(c.getId() != 0)
+			if(c.getId() != 0 && c.isAccepted())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			log.info("Saved");
 			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);

@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public Comment save(Comment comment) throws Exception {
-		if(comment.getId() != 0)
+		if(comment.getId() != 0 && comment.isAccepted())
 			return comment;
 		if (comment.getText() == null)
 			throw new Exception("Testo commento nullo");
