@@ -42,8 +42,8 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public Comment save(Comment comment) throws Exception {
-		if(comment.getId() != 0 && comment.isAccepted())
-			return comment;
+		if(comment.getId() != 0 || comment.isAccepted())
+			return cdao.save(comment);
 		if (comment.getText() == null)
 			throw new Exception("Testo commento nullo");
 
@@ -80,8 +80,12 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Comment accept(int id) throws Exception {
 		Comment com = cdao.getCommentById(id);
-		com.setAccepted(true);
-		return update(com);
+		if(com.getId() != 0) {
+			com.setAccepted(true);
+			return update(com);
+		}
+		else 
+			return null;
 	}
 
 	@Override

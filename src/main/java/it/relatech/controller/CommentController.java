@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.relatech.model.Comment;
+import it.relatech.model.Idea;
 import it.relatech.services.CommentService;
 import it.relatech.services.IdeaService;
 
@@ -41,7 +42,7 @@ public class CommentController {
 	@PostMapping
 	public ResponseEntity<Comment> save(@RequestBody Comment c) throws Exception {
 		try {
-			if(c.getId() != 0 && c.isAccepted())
+			if(c.getId() != 0 || c.isAccepted())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			log.info("Saved");
 			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
@@ -77,8 +78,12 @@ public class CommentController {
 	@PutMapping("/accepting/{id}")
 	public ResponseEntity<Comment> accepted(@PathVariable("id") int id) throws Exception {
 		try {
-			log.info("Saved");
-			return new ResponseEntity<Comment>(comserv.accept(id), HttpStatus.CREATED);
+			if(id != 0) {
+				log.info("Saved");
+				return new ResponseEntity<Comment>(comserv.accept(id), HttpStatus.CREATED);
+			}
+			else 
+				return null;
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Comment>(comserv.accept(id), HttpStatus.INTERNAL_SERVER_ERROR);

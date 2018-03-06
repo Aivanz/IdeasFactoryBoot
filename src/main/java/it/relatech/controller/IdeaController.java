@@ -74,8 +74,12 @@ public class IdeaController {
 	@PutMapping("/accepting/{id}")
 	public ResponseEntity<Idea> accepting(@PathVariable("id") int id) throws Exception {
 		try {
-			log.info("Saved");
-			return new ResponseEntity<Idea>(idserv.accept(id), HttpStatus.CREATED);
+			if(id != 0) {
+				log.info("Saved");
+				return new ResponseEntity<Idea>(idserv.accept(id), HttpStatus.CREATED);
+			}
+			else 
+				return null;
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Idea>(idserv.accept(id), HttpStatus.INTERNAL_SERVER_ERROR);

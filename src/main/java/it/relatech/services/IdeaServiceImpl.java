@@ -45,7 +45,7 @@ public class IdeaServiceImpl implements IdeaService {
 	@Override
 	public Idea save(Idea idea) throws Exception {
 		if(idea.getId() != 0 || idea.isAccepted())
-			return idea;
+			return idao.save(idea);
 		if (idea.getText() == null)
 			throw new Exception("Testo idea nullo");
 
@@ -126,8 +126,12 @@ public class IdeaServiceImpl implements IdeaService {
 	@Override
 	public Idea accept(int id) throws Exception {
 		Idea ide = idao.getIdeaById(id);
-		ide.setAccepted(true);
-		return save(ide);
+		if(ide.getId() != 0) {
+			ide.setAccepted(true);
+			return save(ide);
+		}
+		else 
+			return null;
 	}
 
 	@Override
