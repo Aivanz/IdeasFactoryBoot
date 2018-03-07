@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.relatech.model.Comment;
 import it.relatech.model.Idea;
 import it.relatech.services.IdeaService;
+import it.relatech.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -28,6 +29,9 @@ public class IdeaController {
 
 	@Autowired
 	private IdeaService idserv;
+	
+	@Autowired
+	private UserService userv;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -39,10 +43,13 @@ public class IdeaController {
 	@PostMapping
 	public ResponseEntity<Idea> save(@RequestBody Idea c) throws Exception {
 		try {
-			if(c.getId() != 0 || c.isAccepted())
+
+			if (c.getId() != 0 || c.isAccepted())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			log.info("Saved");
-			return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
+			else {
+				log.info("Saved");
+				return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -74,11 +81,10 @@ public class IdeaController {
 	@PutMapping("/accepting/{id}")
 	public ResponseEntity<Idea> accepting(@PathVariable("id") int id) throws Exception {
 		try {
-			if(id != 0) {
+			if (id != 0) {
 				log.info("Saved");
 				return new ResponseEntity<Idea>(idserv.accept(id), HttpStatus.CREATED);
-			}
-			else 
+			} else
 				return null;
 		} catch (Exception e) {
 			log.error(e.getMessage());

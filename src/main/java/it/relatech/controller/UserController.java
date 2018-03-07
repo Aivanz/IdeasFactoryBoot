@@ -57,7 +57,7 @@ public class UserController {
 
 	// POST
 	@PostMapping
-	public ResponseEntity<User> saveUpdate(@RequestBody User user) throws Exception {
+	public ResponseEntity<User> save(@RequestBody User user) throws Exception {
 		try {
 			log.info("Saved");
 			return new ResponseEntity<User>(userv.save(user), HttpStatus.CREATED);

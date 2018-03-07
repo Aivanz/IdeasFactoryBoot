@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService {
 			return update(com);
 		}
 		else 
-			return null;
+			return com;
 	}
 
 	@Override

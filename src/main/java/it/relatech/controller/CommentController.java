@@ -44,8 +44,10 @@ public class CommentController {
 		try {
 			if(c.getId() != 0 || c.isAccepted())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			log.info("Saved");
-			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+			else {
+				log.info("Saved");
+				return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.INTERNAL_SERVER_ERROR);
