@@ -55,12 +55,13 @@ public class IdeaController {
 				return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
 			}
 			
-			if(principal.getName() != null && c.getId() == 0) {
+			if(principal != null && c.getId() == 0) {
 				log.info("Accepted");
 				c.setAccepted(true);
 				c.setDateIdea(Timestamp.from(Instant.now()));
 				return new ResponseEntity<>(idserv.save(c), HttpStatus.ACCEPTED);
 			}
+			
 			if (c.getId() != 0 || c.isAccepted())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			else {

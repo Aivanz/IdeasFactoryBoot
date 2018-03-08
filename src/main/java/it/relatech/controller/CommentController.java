@@ -31,6 +31,7 @@ public class CommentController {
 
 	@Autowired
 	private CommentService comserv;
+	
 	@Autowired
 	private IdeaService idserv;
 
@@ -49,7 +50,7 @@ public class CommentController {
 				return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
 			}
 			
-			if(principal.getName() != null && c.getId() == 0) {
+			if(principal != null && c.getId() == 0) {
 				log.info("Accepted");
 				c.setAccepted(true);
 				c.setDateComment(Timestamp.from(Instant.now()));
@@ -71,8 +72,12 @@ public class CommentController {
 	public ResponseEntity<Comment> saveLink(@PathVariable("id") int id, @RequestBody Comment c) throws Exception {
 		try {
 			c.setIdea(idserv.getById(id));
-			log.info("Saved");
-			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+			if(!c.getIdea().isAccepted())
+				return new ResponseEntity<Comment>(HttpStatus.BAD_REQUEST);
+			else {
+				log.info("Saved");
+				return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.INTERNAL_SERVER_ERROR);
