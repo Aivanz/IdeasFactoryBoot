@@ -1,6 +1,7 @@
 package it.relatech.services;
 
 import java.security.Principal;
+
 import java.util.List;
 
 import it.relatech.model.User;
@@ -21,5 +22,8 @@ public interface UserService {
 
 	// Controllo principal
 	boolean checkAuth(Principal principal, int id);
+	
+	//cambio password
+	User changePassword(User user) throws Exception;
 
 }

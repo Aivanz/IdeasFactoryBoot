@@ -85,6 +85,25 @@ public class UserController {
 		}
 
 	}
+	
+		@PutMapping("/changePassword/{id}")
+		public ResponseEntity<User> change(@PathVariable("id") int id, @RequestBody User user, Principal principal) throws Exception {
+			User nuovoUser = userv.getById(id);
+			String nuovaPassword = user.getPassword();
+			nuovoUser.setPassword(nuovaPassword);
+			try {
+				
+				if (userv.checkAuth(principal, id)) {
+					log.info("Password changed");
+					return new ResponseEntity<User>(userv.changePassword(nuovoUser), HttpStatus.OK);
+				} else
+					return new ResponseEntity<User>(HttpStatus.METHOD_NOT_ALLOWED);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				return new ResponseEntity<User>(userv.changePassword(nuovoUser), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+		}
 
 	// DELETE
 	@DeleteMapping("/{id}")

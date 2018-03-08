@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
 			return false;
 	}
 
+	@Override
+	public User changePassword(User user) throws Exception {
+		return update(user);
+	}
+
 }
