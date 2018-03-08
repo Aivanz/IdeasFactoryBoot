@@ -51,7 +51,6 @@ public class CommentServiceImpl implements CommentService {
 		comment.setDateComment(Timestamp.from(Instant.now()));
 		temp = cdao.save(comment);
 		if (!temp.isAccepted()) {
-
 			sendMail("Test commento", "E' stata creato/modificato un nuovo commento");
 		}
 		return temp;
@@ -82,7 +81,7 @@ public class CommentServiceImpl implements CommentService {
 		Comment com = cdao.getCommentById(id);
 		if(com.getId() != 0) {
 			com.setAccepted(true);
-			return update(com);
+			return save(com);
 		}
 		else 
 			return com;

@@ -1,5 +1,8 @@
 package it.relatech.controller;
 
+import java.security.Principal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.relatech.model.Comment;
-import it.relatech.model.Idea;
 import it.relatech.services.CommentService;
 import it.relatech.services.IdeaService;
 
@@ -40,10 +42,21 @@ public class CommentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Comment> save(@RequestBody Comment c) throws Exception {
+	public ResponseEntity<Comment> save(@RequestBody Comment c, Principal principal) throws Exception {
 		try {
+			if(principal == null) {
+				log.info("Saved");
+				return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);
+			}
+			
+			if(principal.getName() != null && c.getId() == 0) {
+				log.info("Accepted");
+				c.setAccepted(true);
+				c.setDateComment(Timestamp.from(Instant.now()));
+				return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.ACCEPTED);
+			}
 			if(c.getId() != 0 || c.isAccepted())
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<Comment>(HttpStatus.BAD_REQUEST);
 			else {
 				log.info("Saved");
 				return new ResponseEntity<Comment>(comserv.save(c), HttpStatus.CREATED);

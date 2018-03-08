@@ -1,12 +1,21 @@
 package it.relatech.controller;
 
+import java.security.Principal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.relatech.model.Comment;
 import it.relatech.model.Idea;
+import it.relatech.model.User;
 import it.relatech.services.IdeaService;
 import it.relatech.services.UserService;
 
@@ -29,9 +39,6 @@ public class IdeaController {
 
 	@Autowired
 	private IdeaService idserv;
-	
-	@Autowired
-	private UserService userv;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -41,9 +48,19 @@ public class IdeaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Idea> save(@RequestBody Idea c) throws Exception {
+	public ResponseEntity<Idea> save(@RequestBody Idea c, Principal principal) throws Exception {
 		try {
-
+			if(principal == null) {
+				log.info("Saved");
+				return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
+			}
+			
+			if(principal.getName() != null && c.getId() == 0) {
+				log.info("Accepted");
+				c.setAccepted(true);
+				c.setDateIdea(Timestamp.from(Instant.now()));
+				return new ResponseEntity<>(idserv.save(c), HttpStatus.ACCEPTED);
+			}
 			if (c.getId() != 0 || c.isAccepted())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			else {
@@ -51,7 +68,7 @@ public class IdeaController {
 				return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.CREATED);
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("Idea Controller Exception");
 			return new ResponseEntity<Idea>(idserv.save(c), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
